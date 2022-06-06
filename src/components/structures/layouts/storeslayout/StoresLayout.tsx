@@ -1,5 +1,4 @@
-import React from "react";
-import { Outlet } from "react-router";
+import React, { useState } from "react";
 import {
     Splitter,
     SplitterSide,
@@ -16,8 +15,11 @@ import { Login, Store } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import './storelayout.css';
 import Toolbar from "../../../views/Toolbar/Toolbar";
+import { Outlet } from 'react-router-dom';
 
 function StoresLayout() {
+
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
     const handleRightClose = () => { };
     const handleRightOpen = () => { };
@@ -35,29 +37,26 @@ function StoresLayout() {
             </div>
         );
     };
-    // const renderToolbar = () => {
-    //     return (<Toolbar>
-    //         <div className="left">
-    //             <BackButton>
-    //                 Back
-    //             </BackButton>
-    //         </div>
-    //         <div className="center">
-    //             Title
-    //         </div>
-    //         <div className="right">
-    //             <ToolbarButton>
-    //                 <Icon icon="md-menu" />
-    //             </ToolbarButton>
-    //         </div>
-    //     </Toolbar>);
-    // };
+    const toolBarBtnHandler = () => {
+        setIsSideMenuOpen(!isSideMenuOpen);
+        console.log('isSideMenuOpen: ', isSideMenuOpen);
+
+    };
+    const onOpenSideMenu = () => {
+        setIsSideMenuOpen(true);
+    };
+    const onCloseSideMenu = () => {
+        setIsSideMenuOpen(false);
+    };
     return (
 
         <Splitter>
             <SplitterSide
                 side="left"
                 width={250}
+                onOpen={onOpenSideMenu}
+                onClose={onCloseSideMenu}
+                isOpen={isSideMenuOpen}
                 collapse={true}
                 swipeable={true} >
                 <Page modifier="side_page">
@@ -65,7 +64,7 @@ function StoresLayout() {
                         dataSource={['Stores', 'Login']}
                         renderHeader={renderHeader}
                         renderRow={(row, idx) => (
-                            <ListItem tappable={true} modifier='material'>
+                            <ListItem key={idx} tappable={true} modifier='material'>
                                 <div className="left">
 
                                 </div>
@@ -87,10 +86,9 @@ function StoresLayout() {
             <SplitterContent>
                 <Page>
 
-<Toolbar>
-
-</Toolbar>
-                    
+                    <Toolbar toggleSideMenu={toolBarBtnHandler}>
+                    </Toolbar>
+                    <Outlet />
                 </Page>
             </SplitterContent>
         </Splitter>

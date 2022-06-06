@@ -15,16 +15,14 @@ export default function Toolbar(props: any) {
         <div className="topbar">
             <div className="topbarWrapper">
                 <div className="topLeft">
-
-                    <IconButton aria-label="delete">
+                    <IconButton onClick={props.toggleSideMenu} aria-label="delete">
                         <Dehaze />
                     </IconButton>
                 </div>
                 <div className="topMiddle">
-                    
+                    All Stores
                 </div>
                 <div className="topRight">
-                    right
                 </div>
             </div>
         </div>
