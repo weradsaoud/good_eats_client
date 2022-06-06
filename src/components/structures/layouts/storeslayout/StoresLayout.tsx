@@ -12,6 +12,10 @@ import {
     Icon
 } from "react-onsenui";
 import logo from '../../../../../src/res/logo.png';
+import { Login, Store } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import './storelayout.css';
+import Toolbar from "../../../views/Toolbar/Toolbar";
 
 function StoresLayout() {
 
@@ -31,6 +35,23 @@ function StoresLayout() {
             </div>
         );
     };
+    // const renderToolbar = () => {
+    //     return (<Toolbar>
+    //         <div className="left">
+    //             <BackButton>
+    //                 Back
+    //             </BackButton>
+    //         </div>
+    //         <div className="center">
+    //             Title
+    //         </div>
+    //         <div className="right">
+    //             <ToolbarButton>
+    //                 <Icon icon="md-menu" />
+    //             </ToolbarButton>
+    //         </div>
+    //     </Toolbar>);
+    // };
     return (
 
         <Splitter>
@@ -38,30 +59,39 @@ function StoresLayout() {
                 side="left"
                 width={250}
                 collapse={true}
-                swipeable={true}>
-                <Page>
+                swipeable={true} >
+                <Page modifier="side_page">
                     <List
                         dataSource={['Stores', 'Login']}
                         renderHeader={renderHeader}
                         renderRow={(row, idx) => (
-                            // <ListItem tappable={true} >
-                            //     {row}
-                            // </ListItem>
-                            <ListItem tappable = {true} modifier= 'material'>
+                            <ListItem tappable={true} modifier='material'>
                                 <div className="left">
-                                    <Icon icon="md-face" className="list-item__icon"></Icon>
+
                                 </div>
                                 <div className="center">
+                                    {(idx == 0) ? <IconButton className="side_button" aria-label="delete" size="small">
+                                        <Store fontSize="inherit" />
+                                    </IconButton> :
+                                        <IconButton className="side_button" aria-label="delete" size="small">
+                                            <Login fontSize="inherit" />
+                                        </IconButton>}
                                     {row}
                                 </div>
                             </ListItem>
                         )}
-                        renderFooter={renderFooter}
+                    //renderFooter={renderFooter}
                     />
                 </Page>
             </SplitterSide>
             <SplitterContent>
-                <Page> Page Content </Page>
+                <Page>
+
+<Toolbar>
+
+</Toolbar>
+                    
+                </Page>
             </SplitterContent>
         </Splitter>
 
