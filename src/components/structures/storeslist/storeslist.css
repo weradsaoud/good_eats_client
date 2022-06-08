@@ -1,0 +1,38 @@
+.stores_search_wrapper {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding-top: 1px;
+}
+
+.stores_body_content_wrapper {
+    max-width: 600px;
+    padding: 4px 25px;
+    margin: 0 auto;
+}
+
+.store_item {}
+
+.stores_list_search_field {
+    width: 100%;
+}
+
+.listitem_store_name {
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.listitem_store_description_div {
+    display: block;
+    font-size: 14px;
+    color: #A5A6A6;
+    align-items: center;
+    letter-spacing: -.01em;
+    margin-bottom: 5px;
+}

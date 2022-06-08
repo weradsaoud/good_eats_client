@@ -84,8 +84,7 @@ function StoresLayout() {
                 </Page>
             </SplitterSide>
             <SplitterContent>
-                <Page>
-
+                <Page modifier="content_page">
                     <Toolbar toggleSideMenu={toolBarBtnHandler}>
                     </Toolbar>
                     <Outlet />
