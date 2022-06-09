@@ -14,10 +14,9 @@
     margin: 0 auto;
 }
 
-.store_item {}
-
 .stores_list_search_field {
     width: 100%;
+    border-bottom: 1px solid #efefef;
 }
 
 .listitem_store_name {
@@ -35,4 +34,44 @@
     align-items: center;
     letter-spacing: -.01em;
     margin-bottom: 5px;
+}
+
+.listitem_store_orderingTypes_div {
+    display: block;
+    font-size: 14px;
+    color: #A5A6A6;
+    align-items: center;
+    letter-spacing: -.01em;
+    margin-bottom: 5px;
+}
+
+.store_item_wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.listitem_store_props_div {
+    align-self: center;
+    margin-right: auto;
+}
+.listitem_store_logo_div{
+    align-self: center;
+    margin-left: auto;
+}
+
+.store_item_info{
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+}
+.firstBtn{
+    width: 50%;
+    padding-right: 2%;
+}
+.secondBtn{
+    width: 50%;
+    padding-left: 2%;
 }
