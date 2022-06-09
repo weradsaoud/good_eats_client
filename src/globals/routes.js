@@ -1,6 +1,7 @@
 const routes = {
     loginPageUrl: '/login',
-    storesPageUrl: '/'
+    storesPageUrl: '/',
+    storePageUrl: '/store'
 }
 
 export default routes;

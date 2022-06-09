@@ -1,0 +1,52 @@
+.store_topbar {
+    width: 100%;
+    height: 240px;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-size: cover;
+    
+}
+
+.store_topbarWrapper {
+    height: 100%;
+    padding: 0px 40px 0px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.store_topRight {
+    display: flex;
+    align-items: center;
+}
+
+.store_topLeft {
+    display: flex;
+    text-align: start;
+    height: 100%;
+}
+
+.store_topMiddle {
+    align-self: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #31313a;
+    text-align: left;
+    line-height: 56px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nave_icon {
+    height: fit-content;
+}
+
+.store_logo {
+    display: block;
+    position: absolute;
+    left: calc(50% - 60px);
+    top: 180px;
+}

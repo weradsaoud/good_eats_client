@@ -14,14 +14,15 @@ import './storelayout.css';
 import Toolbar from "../../../views/Toolbar/Toolbar";
 import { Outlet, useNavigate } from 'react-router-dom';
 import routes from "../../../../globals/routes";
+import StoreToolbar from "../../../views/storetoolbar/StoreToolbar";
 import { connect } from "react-redux";
 
-function StoresLayout(props: any) {
+function StoreLayout(props: any) {
 
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
     let navigate = useNavigate();
 
-    
+
 
     const handleRightClose = () => { };
     const handleRightOpen = () => { };
@@ -55,9 +56,6 @@ function StoresLayout(props: any) {
 
         navigate(routes.storesPageUrl);
     };
-    const handleLogIn = () => {
-
-    };
     return (
 
         <Splitter>
@@ -73,32 +71,30 @@ function StoresLayout(props: any) {
                     <List
                         dataSource={['Stores', 'Login']}
                         renderHeader={renderHeader}
-                        renderRow={(row, idx) => {
-                            return (
-                                <ListItem onClick={goToStores} key={idx} tappable={true} modifier='material'>
-                                    <div className="left">
+                        renderRow={(row, idx) => (
+                            <ListItem onClick={goToStores} key={idx} tappable={true} modifier='material'>
+                                <div className="left">
 
-                                    </div>
-                                    <div className="center">
-                                        {(idx == 0) ? <IconButton className="side_button" aria-label="delete" size="small">
-                                            <Store fontSize="inherit" />
-                                        </IconButton> :
-                                            <IconButton className="side_button" aria-label="delete" size="small">
-                                                <Login fontSize="inherit" />
-                                            </IconButton>}
-                                        {row}
-                                    </div>
-                                </ListItem>
-                            )
-                        }}
+                                </div>
+                                <div className="center">
+                                    {(idx == 0) ? <IconButton className="side_button" aria-label="delete" size="small">
+                                        <Store fontSize="inherit" />
+                                    </IconButton> :
+                                        <IconButton className="side_button" aria-label="delete" size="small">
+                                            <Login fontSize="inherit" />
+                                        </IconButton>}
+                                    {row}
+                                </div>
+                            </ListItem>
+                        )}
                     //renderFooter={renderFooter}
                     />
                 </Page>
             </SplitterSide>
             <SplitterContent>
                 <Page modifier="content_page">
-                    <Toolbar toggleSideMenu={toolBarBtnHandler}>
-                    </Toolbar>
+                    <StoreToolbar toggleSideMenu={toolBarBtnHandler}>
+                    </StoreToolbar>
                     <Outlet />
                 </Page>
             </SplitterContent>
@@ -107,4 +103,4 @@ function StoresLayout(props: any) {
     );
 }
 
-export default StoresLayout;
+export default StoreLayout;

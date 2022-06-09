@@ -3,10 +3,13 @@ import { Page, List, ListItem, SearchInput, PullHook, Icon } from "react-onsenui
 import { AccountCircle, Login, Store, Search, ShoppingBasket, AccessTime } from '@mui/icons-material';
 import { Avatar, Button, FormControl, IconButton, Input, InputAdornment } from '@mui/material';
 import './storeslist.css';
+import { useNavigate } from "react-router";
+import routes from "../../../globals/routes";
 
 function StoresList() {
 
     let [pullHookState, setPullHookState] = useState('');
+    let navigate = useNavigate();
 
     const stores = [
         {
@@ -75,6 +78,9 @@ function StoresList() {
     const onLoad = () => {
 
     };
+    const storeClickHandler = () => {
+        navigate(routes.storePageUrl);
+    };
 
     return (
         <div className="stores_body_content_wrapper">
@@ -112,7 +118,7 @@ function StoresList() {
                             });
                         }
                         return (
-                            <ListItem key={idx} tappable={true} modifier='material'>
+                            <ListItem onClick={storeClickHandler} key={idx} tappable={true} modifier='material'>
                                 <div className="left">
                                 </div>
                                 <div className="center">
