@@ -1,6 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 //reducers
-import storeReducer from './reducers/storeReducer';
+import storesReducer from './reducers/storesReducer';
+import configReducer from './reducers/configReducer';
 // saga middleware
 import createSagaMiddleware from 'redux-saga';
 import { applyMiddleware } from 'redux';
@@ -9,7 +10,9 @@ import rootSaga from './sagas';
 
 const rootReducer = combineReducers({
     //state slices
-    store: storeReducer
+    config:configReducer,
+    stores: storesReducer
+
 });
 
 const sagaMiddleware = createSagaMiddleware();

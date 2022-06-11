@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import { ToolbarButton } from "react-onsenui";
-import { Avatar, Button, IconButton } from "@mui/material";
+import { Avatar, Button, IconButton, LinearProgress } from "@mui/material";
 import { Dehaze } from '@mui/icons-material'
 import { connect } from "react-redux";
 import * as actionsTypes from '../../../store/actions/actionsTypes';
@@ -43,24 +43,39 @@ function getStyle(el: any, styleProp: any) {
 
 function StoreToolbar(props: any) {
 
-    let cover = 'https://api-thegoodtill-com-public.s3.eu-west-1.amazonaws.com/goodeats_assets/f1623326-39f2-4c60-b692-0768ce065e35/d408f87a-9e2f-489c-92e9-87b5f4a92c79/header';
+    let cover = props.storeCover;
+    let logo = props.storeLogo;
 
 
     useEffect(() => {
         let store_topbar = document.getElementById('store_topbar_id');
         let store_logo = document.getElementById('store_logo_id');
+        let store_cover = document.getElementById('store_header_img_id');
+        let storeName = document.getElementById('stor_topbar_name');
         let store_topbar_height: number;
         let store_logo_top: number = 0;
-        if (props.scrollY < 190) {
-            store_topbar_height = 240 - props.scrollY;
-            store_logo_top = 190 - props.scrollY;
+        if (props.scrollY < 150) {
+            store_topbar_height = 200 - props.scrollY;
+            store_logo_top = 140 - props.scrollY;
             if (store_logo) {
                 store_logo.style.display = 'block'
+            }
+            if (storeName && store_cover && store_topbar) {
+                store_cover.style.visibility = 'visible';
+                store_topbar.style.backgroundColor = '#ecfaf6';
+                store_topbar.style.marginBottom = '70px';
+                storeName.style.visibility = 'hidden';
             }
         } else {
             store_topbar_height = 50;
             if (store_logo) {
-                store_logo.style.display = 'none'
+                store_logo.style.display = 'none';
+            }
+            if (storeName && store_cover && store_topbar) {
+                store_cover.style.visibility = 'hidden';
+                store_topbar.style.backgroundColor = '#ecfaf6';
+                store_topbar.style.marginBottom = '10px';
+                storeName.style.visibility = 'visible';
             }
         }
         let newHeight = store_topbar_height.toString() + 'px';
@@ -83,12 +98,14 @@ function StoreToolbar(props: any) {
     }, []);
 
     return (
-        <div id='store_topbar_id' className="store_topbar" style={{ "backgroundImage": `url(${cover})` }}>
-            <div id = 'store_logo_id' className="store_logo">
+        <div id='store_topbar_id' className="store_topbar" /*style={{ "backgroundImage": `url(${cover})` }}*/>
+            <img id="store_header_img_id" className="store_header_img" src={cover} />
+            <div id='store_logo_id' className="store_logo">
                 <Avatar
                     alt=""
-                    src={'https://api-thegoodtill-com-public.s3.eu-west-1.amazonaws.com/goodeats_assets/f1623326-39f2-4c60-b692-0768ce065e35/d408f87a-9e2f-489c-92e9-87b5f4a92c79/logo'}
+                    src={logo}
                     sx={{ width: 120, height: 120 }}
+                    style = {{border: '5px solid white'}}
                 />
             </div>
             <div className="store_topbarWrapper">
@@ -98,17 +115,19 @@ function StoreToolbar(props: any) {
                     </IconButton>
                 </div>
                 <div className="store_topMiddle">
+                    <p id='stor_topbar_name'>{props.storeName}</p>
                 </div>
                 <div className="store_topRight">
                 </div>
             </div>
+            <LinearProgress style={{ "zIndex": "-100" }} color="success" />
         </div>
     );
 }
 
 const mapStateToProps = (state: any) => {
     return {
-        scrollY: state.store.scrollY
+        scrollY: state.stores.scrollY
     }
 };
 

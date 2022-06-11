@@ -1,0 +1,133 @@
+.store_info_div {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    display: block;
+    justify-content: center;
+    width: fit-content;
+}
+
+.store_name_div {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.store_description_div {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 19px;
+    color: #A5A6A6;
+    align-items: center;
+    letter-spacing: -.01em;
+    margin-bottom: 5px;
+}
+
+.store_orderingtypes_div {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 19px;
+    color: #A5A6A6;
+    align-items: center;
+    letter-spacing: -.01em;
+    margin-bottom: 5px;
+}
+
+.store_firstBtn {
+    width: 30%;
+    align-self: center;
+    margin-right: auto;
+}
+
+.store_secondBtn {
+    width: 30%;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.store_thirdBtn {
+    width: 30%;
+    align-self: center;
+    margin-left: auto;
+}
+
+.store_info_btns {
+    display: flex;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#store_info {
+    max-width: 600px;
+    padding: 4px 25px;
+    margin: 0 auto;
+}
+
+.store_info_btn_span {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Rajdhani', sans-serif;
+    line-height: 17px;
+    font-weight: 400;
+    color: #1a1824;
+
+}
+
+.items_categories_search_wrapper {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding-top: 1px;
+}
+
+.items_categories_search_field {
+    width: 100%;
+    border-bottom: 1px solid #efefef;
+}
+
+.Btn{
+    width:100% !important;
+    text-transform: none !important;
+    background: #ecfaf6 !important;
+    padding: 5px 40px 5px 16px !important;
+}
+.btn_icon{
+    margin-left: 5px;
+}
+
+@media only screen and (max-width: 510px) {
+    .Btn{
+        width:100% !important;
+        text-transform: none !important;
+        background: #ecfaf6 !important;
+        padding: 5px 0px 5px 0px !important;
+    }
+  }
+
+  @media only screen and (max-width: 350px) {
+    .store_info_btn_span {
+        margin-left: auto;
+        margin-right: auto;
+        font-family: 'Rajdhani', sans-serif;
+        line-height: 17px;
+        font-weight: 400;
+        font-size: 10px;
+        color: #1a1824;
+    
+    }
+    .css-1d6wzja-MuiButton-startIcon{
+        margin-right: 4px !important;
+    }
+  }

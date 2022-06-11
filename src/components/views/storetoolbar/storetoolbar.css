@@ -1,12 +1,20 @@
 .store_topbar {
     width: 100%;
-    height: 240px;
+    height: auto;
     background-color: white;
     position: sticky;
     top: 0;
     z-index: 999;
     background-size: cover;
-    
+    background-repeat: no-repeat;
+}
+
+.store_header_img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: -10;
 }
 
 .store_topbarWrapper {
@@ -49,4 +57,10 @@
     position: absolute;
     left: calc(50% - 60px);
     top: 180px;
+}
+#stor_topbar_name{
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 5px;
 }

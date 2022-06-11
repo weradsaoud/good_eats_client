@@ -6,9 +6,9 @@ import StoreLayout from "../layouts/storeLayout/storeLayout";
 import StoresLayout from "../layouts/storeslayout/StoresLayout";
 import Store from "../storepage/store";
 import StoresList from "../storeslist/StoresList";
-
+import * as actionsTypes from '../../../store/actions/actionsTypes';
 interface IProps {
-
+    loadConfig: () => void
 }
 
 interface IState {
@@ -19,7 +19,7 @@ class GoodEats_Client extends Component<IProps, IState>{
 
 
     componentDidMount(): void {
-
+        this.props.loadConfig();
     }
 
     public render(): React.ReactNode {
@@ -38,4 +38,16 @@ class GoodEats_Client extends Component<IProps, IState>{
     }
 }
 
-export default GoodEats_Client;
+const mapStateToProps = (state: any) => {
+    return {
+        config: state.config
+    }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        loadConfig: () => dispatch({ type: actionsTypes.LOADCONFIG })
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GoodEats_Client);

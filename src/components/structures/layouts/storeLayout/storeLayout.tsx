@@ -9,10 +9,10 @@ import {
 } from "react-onsenui";
 import logo from '../../../../../src/res/logo.png';
 import { Login, Store } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { IconButton, LinearProgress } from '@mui/material';
 import './storelayout.css';
 import Toolbar from "../../../views/Toolbar/Toolbar";
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import routes from "../../../../globals/routes";
 import StoreToolbar from "../../../views/storetoolbar/StoreToolbar";
 import { connect } from "react-redux";
@@ -21,7 +21,8 @@ function StoreLayout(props: any) {
 
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
     let navigate = useNavigate();
-
+    let location = useLocation();
+    let store: any = location.state;
 
 
     const handleRightClose = () => { };
@@ -93,7 +94,7 @@ function StoreLayout(props: any) {
             </SplitterSide>
             <SplitterContent>
                 <Page modifier="content_page">
-                    <StoreToolbar toggleSideMenu={toolBarBtnHandler}>
+                    <StoreToolbar storeLogo={store.logo} storeCover={store.cover} storeName={store.name} toggleSideMenu={toolBarBtnHandler}>
                     </StoreToolbar>
                     <Outlet />
                 </Page>
