@@ -1,6 +1,6 @@
 import { ActionTypes } from '@mui/base';
 import { AccessTime, ShoppingBasket, Info, Search } from '@mui/icons-material';
-import { Button, FormControl, Input, InputAdornment } from '@mui/material';
+import { Avatar, Button, FormControl, Input, InputAdornment } from '@mui/material';
 import React, { useEffect } from 'react'
 import { List, ListItem } from 'react-onsenui';
 import { connect } from 'react-redux';
@@ -17,14 +17,14 @@ function Store(props: any) {
         if (props.scrollY > 150) {
             let cateList = document.getElementById('cate_list_id');
             let storeInfo = document.getElementById('store_info');
-            if (cateList&&storeInfo) {
+            if (cateList && storeInfo) {
                 cateList.style.marginTop = "60px";
-                storeInfo.style.height = 'calc(100vh - 50px)';
+                storeInfo.style.height = 'calc(100vh - 70px)';
             }
         } else {
             let cateList = document.getElementById('cate_list_id');
             let storeInfo = document.getElementById('store_info');
-            if (cateList&&storeInfo) {
+            if (cateList && storeInfo) {
                 cateList.style.marginTop = "5px";
                 storeInfo.style.height = 'calc(100vh - 280px)';
             }
@@ -49,6 +49,10 @@ function Store(props: any) {
 
     const renderHeader = () => { return (<div className='cate_list_header'>Categories</div>); };
     const renderFooter = () => { return (<div> Footer </div>); };
+
+    const renderItemsHeader = () => {
+        return <div></div>;
+    };
 
 
     return (
@@ -105,13 +109,50 @@ function Store(props: any) {
                                     {row}
                                 </div>
                             </div>
-                            <div className="expandable-content">Expandable content</div>
+                            <div className="expandable-content">
+                                <List modifier={'noborder'}
+                                    dataSource={[{ id: "1", itemName: "item1", description: "it is item1", img: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280%2Cc_limit/the-ultimate-hamburger.jpg" }, { id: "2", itemName: "item2", description: "it is item2", img: "https://mms.businesswire.com/media/20200526005029/en/793342/5/NDW_mediaImage-01.jpg" }, { id: "3", itemName: "item3", description: "it is item3", img: "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900" }, { id: "4", itemName: "item4", description: "it is item4", img: "https://static.onecms.io/wp-content/uploads/sites/43/2022/06/01/414768-green-salad-Nichele-4x3-1.jpg" }]}
+                                    renderHeader={renderItemsHeader}
+                                    renderRow={(row: any, idx: number) => (
+                                        <ListItem tappable modifier='chevron'>
+                                            <div className='left'>
+                                                <div className="listitem_store_logo_div">
+                                                    <Avatar
+                                                        alt={row.itemName}
+                                                        src={row.img}
+                                                        sx={{ width: 54, height: 54 }}
+                                                        variant="rounded"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div id='cate_item_center' className='center'>
+                                                <div className="cate_item_wrapper">
+                                                    <div className="listitem_store_props_div">
+                                                        <div className="listitem_store_name_div">
+                                                            <strong className="listitem_store_name">
+                                                                {row.itemName}
+                                                            </strong>
+                                                        </div>
+                                                        <div className="listitem_store_description_div">
+                                                            {row.description}
+                                                        </div>
+                                                    </div>
+                                                    <div className='cate_item_price'>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='rigth'></div>
+                                        </ListItem>
+                                    )}
+                                />
+                            </div>
                         </ListItem>
                     )}
                     renderFooter={renderFooter}
                 />
             </div>
-            
+
         </div>
 
     );

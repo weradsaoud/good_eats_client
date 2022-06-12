@@ -112,7 +112,7 @@ function StoresList(props: any) {
                                             </div>
                                             <div className="listitem_store_logo_div">
                                                 <Avatar
-                                                    alt="Remy Sharp"
+                                                    alt={row.name}
                                                     src={row.logo}
                                                     sx={{ width: 65, height: 65 }}
                                                 />
