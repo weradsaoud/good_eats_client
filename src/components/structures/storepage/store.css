@@ -85,11 +85,14 @@
 .items_categories_search_wrapper {
     width: 100%;
     position: sticky;
-    top: 0;
+    background: white;
+    top: -10px;
     display: flex;
     text-align: center;
     justify-content: center;
     padding-top: 1px;
+    z-index: 100;
+    padding-bottom: 5px;
 }
 
 .items_categories_search_field {
@@ -97,26 +100,27 @@
     border-bottom: 1px solid #efefef;
 }
 
-.Btn{
-    width:100% !important;
+.Btn {
+    width: 100% !important;
     text-transform: none !important;
     background: #ecfaf6 !important;
     padding: 5px 40px 5px 16px !important;
 }
-.btn_icon{
+
+.btn_icon {
     margin-left: 5px;
 }
 
 @media only screen and (max-width: 510px) {
-    .Btn{
-        width:100% !important;
+    .Btn {
+        width: 100% !important;
         text-transform: none !important;
         background: #ecfaf6 !important;
         padding: 5px 0px 5px 0px !important;
     }
-  }
+}
 
-  @media only screen and (max-width: 350px) {
+@media only screen and (max-width: 350px) {
     .store_info_btn_span {
         margin-left: auto;
         margin-right: auto;
@@ -125,9 +129,30 @@
         font-weight: 400;
         font-size: 10px;
         color: #1a1824;
-    
+
     }
-    .css-1d6wzja-MuiButton-startIcon{
+
+    .css-1d6wzja-MuiButton-startIcon {
         margin-right: 4px !important;
     }
-  }
+}
+
+.cate_list_header {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#input-with-icon-adornment {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.cate_item_header {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 0;
+    border-left: black solid 3px;
+}

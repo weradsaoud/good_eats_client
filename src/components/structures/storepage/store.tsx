@@ -1,7 +1,8 @@
 import { ActionTypes } from '@mui/base';
 import { AccessTime, ShoppingBasket, Info, Search } from '@mui/icons-material';
-import { Button, FormControl, Input, InputAdornment, LinearProgress } from '@mui/material';
-import React from 'react'
+import { Button, FormControl, Input, InputAdornment } from '@mui/material';
+import React, { useEffect } from 'react'
+import { List, ListItem } from 'react-onsenui';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router';
 import * as actionsTypes from '../../../store/actions/actionsTypes';
@@ -11,7 +12,24 @@ function Store(props: any) {
 
     let location = useLocation();
     let store: any = location.state;
-    console.log('store: ', store);
+
+    useEffect(() => {
+        if (props.scrollY > 150) {
+            let cateList = document.getElementById('cate_list_id');
+            let storeInfo = document.getElementById('store_info');
+            if (cateList&&storeInfo) {
+                cateList.style.marginTop = "60px";
+                storeInfo.style.height = 'calc(100vh - 50px)';
+            }
+        } else {
+            let cateList = document.getElementById('cate_list_id');
+            let storeInfo = document.getElementById('store_info');
+            if (cateList&&storeInfo) {
+                cateList.style.marginTop = "5px";
+                storeInfo.style.height = 'calc(100vh - 280px)';
+            }
+        }
+    }, [props.scrollY])
 
     let orderingTypes: string = '';
     if (store.orderingTypes && store.orderingTypes.length > 0) {
@@ -29,9 +47,12 @@ function Store(props: any) {
         props.handleScroll(storeDiv?.scrollTop);
     };
 
+    const renderHeader = () => { return (<div className='cate_list_header'>Categories</div>); };
+    const renderFooter = () => { return (<div> Footer </div>); };
+
 
     return (
-        <div id='store_info' style={{ "height": "calc(100vh - 270px)", "overflow": "scroll" }} onScroll={handleScroll}>
+        <div id='store_info' style={{ "height": "calc(100vh - 280px)", "overflow": "scroll" }} onScroll={handleScroll}>
             <div className='store_info_div'>
                 <div className='store_name_div'>
                     {store.name}
@@ -64,7 +85,7 @@ function Store(props: any) {
                 <FormControl variant="standard" className="items_categories_search_field">
                     <Input
                         id="input-with-icon-adornment"
-                        placeholder="search for stores"
+                        placeholder="search for an item or category"
                         startAdornment={
                             <InputAdornment position="start">
                                 <Search />
@@ -73,49 +94,24 @@ function Store(props: any) {
                     />
                 </FormControl>
             </div>
-            <div className='cate_list'>
-
+            <div id='cate_list_id' className='cate_list'>
+                <List modifier={'noborder'}
+                    dataSource={['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5', 'Row 6', 'Row 7', 'Row 8', 'Row 9', 'Row 10', 'Row 11', 'Row 12', 'Row 13', 'Row 14', 'Row 15']}
+                    renderHeader={renderHeader}
+                    renderRow={(row: any, idx: number) => (
+                        <ListItem expandable tappable modifier='nodivider' >
+                            <div className="left">
+                                <div className='cate_item_header'>
+                                    {row}
+                                </div>
+                            </div>
+                            <div className="expandable-content">Expandable content</div>
+                        </ListItem>
+                    )}
+                    renderFooter={renderFooter}
+                />
             </div>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
-            <div>11</div>
-            <div>12</div>
-            <div>13</div>
-            <div>14</div>
-            <div>15</div>
-            <div>16</div>
-            <div>17</div>
-            <div>18</div>
-            <div>19</div>
-            <div>20</div>
-            <div>21</div>
-            <div>22</div>
-            <div>23</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            <div>hi</div>
-            v
-            <div>hi</div>
-
+            
         </div>
 
     );
@@ -124,7 +120,7 @@ function Store(props: any) {
 
 const mapStateToProps = (state: any) => {
     return {
-        store: state.store
+        scrollY: state.stores.scrollY
     }
 };
 
