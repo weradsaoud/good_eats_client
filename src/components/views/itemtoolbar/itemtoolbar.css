@@ -1,6 +1,9 @@
-.store_topbar {
+#item_topbar_id{
+
+}
+.item_topbar{
     width: 100%;
-    height: auto;
+    height: 200px;
     background-color: white;
     position: sticky;
     top: 0;
@@ -9,15 +12,20 @@
     background-repeat: no-repeat;
 }
 
-.store_header_img {
+#item_header_img_id{
+
+}
+
+.item_header_img{
     position: absolute;
     height: 100%;
     width: 100%;
     object-fit: cover;
     z-index: -10;
+
 }
 
-.store_topbarWrapper {
+.item_topbarWrapper{
     height: 100%;
     padding: 0px 40px 0px 20px;
     display: flex;
@@ -25,18 +33,13 @@
     justify-content: space-between;
 }
 
-.store_topRight {
-    display: flex;
-    align-items: center;
-}
-
-.store_topLeft {
+.item_topLeft{
     display: flex;
     text-align: start;
     height: 100%;
 }
 
-.store_topMiddle {
+.item_topMiddle{
     align-self: center;
     font-family: 'Rajdhani', sans-serif;
     font-size: 30px;
@@ -48,23 +51,13 @@
     margin-right: auto;
 }
 
-.nave_icon {
-    height: fit-content;
+.item_topRight{
+    display: flex;
+    text-align: start;
+    height: 100%;
 }
 
-.store_logo {
-    display: block;
-    position: absolute;
-    left: calc(50% - 60px);
-    top: 180px;
-}
-#stor_topbar_name{
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 25px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
 .nave_icon{
-    background: rgba(255, 255, 255, 0.6) !important;
-    margin-top: 3px !important;
+    background: rgba(255, 255, 255, 0.6) !important;;
+    margin-top: 3px;
 }

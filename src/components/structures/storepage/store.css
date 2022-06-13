@@ -15,6 +15,7 @@
     font-size: 30px;
     font-weight: 700;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .storePage_description_div {
@@ -28,6 +29,7 @@
     align-items: center;
     letter-spacing: -.01em;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .storePage_orderingtypes_div {
@@ -41,6 +43,7 @@
     align-items: center;
     letter-spacing: -.01em;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .store_firstBtn {
@@ -128,7 +131,7 @@
         margin-right: auto;
         font-family: 'Rajdhani', sans-serif;
         line-height: 17px;
-        font-weight: 400;
+        font-weight: 600;
         font-size: 10px;
         color: #1a1824;
 

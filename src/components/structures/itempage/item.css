@@ -1,0 +1,14 @@
+.item_content{
+    max-width: 600px;
+    padding: 4px 25px;
+    margin: 0 auto;
+}
+.item_name_div{
+    margin-top: 15px;
+    width: fit-content;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-align: center;
+}

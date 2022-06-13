@@ -7,6 +7,7 @@ import StoresLayout from "../layouts/storeslayout/StoresLayout";
 import Store from "../storepage/store";
 import StoresList from "../storeslist/StoresList";
 import * as actionsTypes from '../../../store/actions/actionsTypes';
+import Item from "../itempage/Item";
 interface IProps {
     loadConfig: () => void
 }
@@ -32,7 +33,7 @@ class GoodEats_Client extends Component<IProps, IState>{
                 <Route element={<StoreLayout />}>
                     <Route path={routes.storePageUrl} element={<Store />}></Route>
                 </Route>
-
+                <Route path={routes.item} element={<Item />}/>
             </Routes >
         );
     }

@@ -5,11 +5,14 @@ import { Avatar, Button, FormControl, Input, InputAdornment } from '@mui/materia
 import React, { useEffect } from 'react'
 import { List, ListItem } from 'react-onsenui';
 import { connect } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
+import routes from '../../../globals/routes';
 import * as actionsTypes from '../../../store/actions/actionsTypes';
 import './store.css';
 
 function Store(props: any) {
+
+    let navigate = useNavigate();
 
     let location = useLocation();
     let store: any = location.state;
@@ -59,6 +62,10 @@ function Store(props: any) {
     const renderItemsHeader = () => {
         return <div></div>;
     };
+
+    const goToItem = (item: any) => {
+        navigate(routes.item, { state: item });
+    }
 
     let view: JSX.Element;
     if (props.gettingStoreCategories) {
@@ -110,7 +117,7 @@ function Store(props: any) {
                 <div id='cate_list_id' className='cate_list'>
                     <List modifier={'noborder'}
                         //dataSource={[{ id: "1", cateName: 'Row 1', description: "it is category 1" }, { id: "2", cateName: 'Row 2', description: "it is category 2" }, { id: "3", cateName: 'Row 3', description: "it is category 3" }, { id: "4", cateName: 'Row 4', description: "irt is category 4" }, { id: "5", cateName: 'Row 5', description: "it is category 5" }, { id: "6", cateName: 'Row 6', description: "it is category 6" }, { id: "7", cateName: 'Row 7', description: "it is category 7" }, { id: "8", cateName: 'Row 8', description: "it is category 8" }, { id: "9", cateName: 'Row 9', description: "it is category 9" }, { id: "10", cateName: 'Row 10', description: "it is category 10" }]}
-                        dataSource = {props.storeCategories}
+                        dataSource={props.storeCategories}
                         renderHeader={renderHeader}
                         renderRow={(cate: any, idx: number) => (
                             <ListItem expandable tappable modifier='nodivider' >
@@ -127,10 +134,10 @@ function Store(props: any) {
                                 <div className="expandable-content">
                                     <List modifier={'noborder'}
                                         //dataSource={[{ id: "1", itemName: "item1", description: "it is item1, and it is very delicious, it is made from natural indrediants ", price: '45$', img: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280%2Cc_limit/the-ultimate-hamburger.jpg" }, { id: "2", itemName: "item2", description: "it is item2", price: '45$', img: "https://mms.businesswire.com/media/20200526005029/en/793342/5/NDW_mediaImage-01.jpg" }, { id: "3", itemName: "item3", description: "it is item3", price: '45$', img: "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900" }, { id: "4", itemName: "item4", description: "it is item4", price: '45$', img: "https://static.onecms.io/wp-content/uploads/sites/43/2022/06/01/414768-green-salad-Nichele-4x3-1.jpg" }]}
-                                        dataSource = {cate.items}
+                                        dataSource={cate.items}
                                         renderHeader={renderItemsHeader}
                                         renderRow={(item: any, idx: number) => (
-                                            <ListItem tappable modifier='chevron'>
+                                            <ListItem tappable modifier='chevron' onClick={() => goToItem(item)}>
                                                 <div className='left'>
                                                     <div className="listitem_store_logo_div">
                                                         <Avatar
