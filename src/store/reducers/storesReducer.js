@@ -13,13 +13,14 @@ const initialState = {
     //maxServeTime: 30
     //} ... ]
     gettingStores: true,
-    response: {}
+    response: {},
+    storeCategories: [],
+    gettingStoreCategories: true
 }
 
 const storesReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionsTypes.SCROLL:
-            console.log('from reducer: ', action.scrollY);
             return {
                 ...state,
                 scrollY: action.scrollY
@@ -44,6 +45,13 @@ const storesReducer = (state = initialState, action) => {
                 gettingStores: false,
                 response: { ...action.response }
             }
+        case actionsTypes.SAVESTORECATEGORIESLOCALLY:
+            return {
+                ...state,
+                storeCategories: [...action.storeCategories],
+                gettingStoreCategories: false
+            }
+
     }
     return state;
 };

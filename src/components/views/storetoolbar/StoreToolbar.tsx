@@ -105,7 +105,7 @@ function StoreToolbar(props: any) {
                     alt=""
                     src={logo}
                     sx={{ width: 120, height: 120 }}
-                    style = {{border: '5px solid white'}}
+                    style={{ border: '5px solid white' }}
                 />
             </div>
             <div className="store_topbarWrapper">
@@ -120,14 +120,15 @@ function StoreToolbar(props: any) {
                 <div className="store_topRight">
                 </div>
             </div>
-            <LinearProgress style={{ "zIndex": "-100" }} color="success" />
+            {(props.gettingStoreCategories) ? <LinearProgress style={{ "zIndex": "-100" }} color="success" /> : null}
         </div>
     );
 }
 
 const mapStateToProps = (state: any) => {
     return {
-        scrollY: state.stores.scrollY
+        scrollY: state.stores.scrollY,
+        gettingStoreCategories: state.stores.gettingStoreCategories
     }
 };
 

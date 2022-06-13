@@ -1,6 +1,6 @@
 import { takeEvery, all, put } from 'redux-saga/effects';
 import * as actionsTypes from '../actions/actionsTypes';
-import { getStores } from '../../API/api';
+import { getStores, getStoreGategories } from '../../API/api';
 
 
 function* onGetStores(action) {
@@ -16,12 +16,29 @@ function* onGetStores(action) {
     }
 }
 
+function* onGetStoreGategories(action) {
+    try {
+        const response = yield getStoreGategories(action.storeId);
+        if (response.status == 200) {
+            console.log('getStoreGategories: ', response);
+            yield put({ type: actionsTypes.SAVESTORECATEGORIESLOCALLY, storeCategories: response.data });
+        }
+    } catch (error) {
+
+    }
+}
+
 function* watchGetStores() {
     yield takeEvery(actionsTypes.GETSTORES, onGetStores);
 }
 
+function* watchGetStoreGategories() {
+    yield takeEvery(actionsTypes.GETSTOREGATEGORIES, onGetStoreGategories)
+}
+
 export default function* storesSagas() {
     yield all([
-        watchGetStores()
+        watchGetStores(),
+        watchGetStoreGategories()
     ]);
 }
