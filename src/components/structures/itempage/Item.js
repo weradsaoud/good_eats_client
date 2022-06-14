@@ -38,12 +38,10 @@ function Item(props) {
         item = props.selectedItem;
         console.log('else item: ', item);
     }
-    console.log('item: ', item);
 
     useEffect(() => {
-        // if (optionsLength > 0) {
-        //     setActiveNext(true);
-        // }
+        console.log('item_id from useEffect: ', item.item_id);
+        props.getoptions(item.item_id);
         setOptionName(options[0].name);
         setOptionId(options[0].optionId);
         props.setSelectedItem(item);
@@ -209,13 +207,15 @@ function Item(props) {
 
 const mapStateToProps = (state) => {
     return {
+        selectedStore: state.stores.selectedStore,
         selectedItem: state.stores.selectedItem
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setSelectedItem: (item) => dispatch({ type: actionsTypes.SETSELECTEDITEM, item: item })
+        setSelectedItem: (item) => dispatch({ type: actionsTypes.SETSELECTEDITEM, item: item }),
+        getoptions: (item_id) => dispatch({ type: actionsTypes.GETITEMIOPTIONS, item_id: item_id })
     }
 };
 

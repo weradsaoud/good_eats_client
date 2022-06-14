@@ -1,6 +1,7 @@
 const endPoints = {
     getStores: 'api/client/stores',
-    getStoreCtaegories: 'api/client/storeCategories'
+    getStoreCtaegories: 'api/client/storeCategories',
+    getItemOptions: 'api/client/itemOptions'
 }
 
 export default endPoints;
