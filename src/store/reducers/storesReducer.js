@@ -15,10 +15,13 @@ const initialState = {
     gettingStores: true,
     response: {},
     storeCategories: [],
-    gettingStoreCategories: true
+    gettingStoreCategories: true,
+    selectedStore: {},
+    selectedItem: {}
 }
 
 const storesReducer = (state = initialState, action) => {
+    console.log('state: ', state);
     switch (action.type) {
         case actionsTypes.SCROLL:
             return {
@@ -51,6 +54,19 @@ const storesReducer = (state = initialState, action) => {
                 storeCategories: [...action.storeCategories],
                 gettingStoreCategories: false
             }
+
+        case actionsTypes.SETSELECTEDSTORE:
+            return {
+                ...state,
+                selectedStore: { ...action.store }
+            };
+
+        case actionsTypes.SETSELECTEDITEM:
+            console.log('reducer item: ', action.item);
+            return {
+                ...state,
+                selectedItem: { ...action.item }
+            };
 
     }
     return state;

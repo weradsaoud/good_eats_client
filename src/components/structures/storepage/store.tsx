@@ -13,10 +13,15 @@ import './store.css';
 function Store(props: any) {
 
     let navigate = useNavigate();
-
+    let store: any;
     let location = useLocation();
-    let store: any = location.state;
-
+    if (location.state) {
+        store = location.state;
+        console.log('if store: ', store);
+    } else {
+        store = props.selectedStore;
+        console.log('else store: ', store);
+    }
 
     useEffect(() => {
         if (props.scrollY > 150) {
@@ -37,6 +42,7 @@ function Store(props: any) {
     }, [props.scrollY]);
 
     useEffect(() => {
+        props.setSelectedStore(store);
         props.getStoreGategories(store.id);
     }, []);
 
@@ -189,14 +195,16 @@ const mapStateToProps = (state: any) => {
     return {
         scrollY: state.stores.scrollY,
         storeCategories: state.stores.storeCategories,
-        gettingStoreCategories: state.stores.gettingStoreCategories
+        gettingStoreCategories: state.stores.gettingStoreCategories,
+        selectedStore: state.stores.selectedStore
     }
 };
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         handleScroll: (scrollY: number) => dispatch({ type: actionsTypes.SCROLL, scrollY: scrollY }),
-        getStoreGategories: (id: number) => dispatch({ type: actionsTypes.GETSTOREGATEGORIES, storeId: id })
+        getStoreGategories: (id: number) => dispatch({ type: actionsTypes.GETSTOREGATEGORIES, storeId: id }),
+        setSelectedStore: (store: any) => dispatch({ type: actionsTypes.SETSELECTEDSTORE, store: store })
     }
 };
 

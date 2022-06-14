@@ -22,7 +22,13 @@ function StoreLayout(props: any) {
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
     let navigate = useNavigate();
     let location = useLocation();
-    let store: any = location.state;
+    let store: any;
+
+    if (location.state) {
+        store = location.state;
+    } else {
+        store = props.selectedStore;
+    }
 
 
     const handleRightClose = () => { };
@@ -104,4 +110,16 @@ function StoreLayout(props: any) {
     );
 }
 
-export default StoreLayout;
+const mapStateToProps = (state: any) => {
+    return {
+        selectedStore: state.stores.selectedStore
+    }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoreLayout);
