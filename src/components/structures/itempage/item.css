@@ -1,9 +1,10 @@
-.item_content{
+.item_content {
     max-width: 600px;
     padding: 4px 25px;
     margin: 0 auto;
 }
-.item_name_div{
+
+.item_name_div {
     margin-top: 15px;
     width: fit-content;
     font-family: 'Rajdhani', sans-serif;
@@ -12,7 +13,8 @@
     margin-bottom: 5px;
     text-align: center;
 }
-.item_options_literal{
+
+.item_options_literal {
     margin-top: 10px;
     width: fit-content;
     font-family: 'Rajdhani', sans-serif;
@@ -20,4 +22,58 @@
     font-weight: 600;
     margin-bottom: 5px;
     text-align: center;
+}
+
+.extras_literal {
+    margin-top: 10px;
+    width: fit-content;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.item_extras {
+    margin-top: 10px;
+}
+
+.item_content {
+    height: calc(100vh - 150px);
+    overflow: scroll;
+}
+
+.option_value_div {
+    width: fit-content;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.extra_value_div {
+    width: fit-content;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.extra_price_div {
+    width: fit-content;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.checkout_btn_div {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.checkout_btn {
+    width: 100% !important;
+    background-color: rgb(10, 131, 5) !important;
 }
