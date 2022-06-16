@@ -19,15 +19,9 @@ function Item(props) {
     let [activePrevious, setActivePrevious] = useState(false);
     let [optionName, setOptionName] = useState('');
     let [optionId, setOptionId] = useState('');
-    let [optionsValues, setOptionsValues] = useState(
-        props.options?.map((o, idx) => {
-            return (
-                { optionId: o.optionId, name: o.name, value: '' }
-            );
-        })
-    );
+    let [optionsValues, setOptionsValues] = useState([]);
     let [finishOptions, setFinishOptions] = useState(false);
-    let optionsLength;
+    var optionsLength = props.options.length;
 
     let location = useLocation();
     let item;
@@ -41,12 +35,22 @@ function Item(props) {
         //console.log('item_id from useEffect: ', item.item_id);
         props.getoptions(item.item_id);
         props.setSelectedItem(item);
+
+        return () => {
+            props.ItemWillUnmount();
+        }
     }, []);
 
     useEffect(() => {
         if (props.options.length > 0) {
             setOptionId(props.options[0].optionId);
-            optionsLength = props.options.length;
+            setOptionsValues(
+                props.options.map((o, idx) => {
+                    return (
+                        { optionId: o.optionId, name: o.name, value: '' }
+                    );
+                })
+            );
         } else {
 
         }
@@ -58,8 +62,8 @@ function Item(props) {
             let index = activeIndex - 1;
             setActiveIndex(index);
             setActiveNext(true);
-            setOptionName(options[index].name);
-            setOptionId(options[index].optionId);
+            setOptionName(props.options[index].name);
+            setOptionId(props.options[index].optionId);
             if (index == 0) {
                 setActivePrevious(false);
             }
@@ -68,10 +72,10 @@ function Item(props) {
     const nextOption = () => {
         if (activeIndex < (optionsLength - 1)) {
             let index = activeIndex + 1;
-            let currentOptionId = options[index].optionId;
+            let currentOptionId = props.options[index].optionId;
             setActiveIndex(index);
             setActivePrevious(true);
-            setOptionName(options[index].name);
+            setOptionName(props.options[index].name);
             setOptionId(currentOptionId);
             let currentOptionVal = optionsValues.filter(ov => ov.optionId == currentOptionId)[0].value;
             if (currentOptionVal == '') {
@@ -87,9 +91,9 @@ function Item(props) {
             <div></div>
         );
     };
-    const prepareVariant = () => {
+    const prepareVariant = (optionsValuesCopy) => {
         let variant = {};
-        optionsValues.forEach(ov => {
+        optionsValuesCopy.forEach(ov => {
             variant[ov.name] = ov.value;
         });
         return JSON.stringify(variant);
@@ -108,12 +112,14 @@ function Item(props) {
             });
             console.log('optionsValuesCopy: ', optionsValuesCopy);
             setOptionsValues(optionsValuesCopy);
+            console.log('optionsLength: ', optionsLength);
+            console.log('activeIndex: ', activeIndex);
             if ((optionsLength > 0) && (activeIndex < (optionsLength - 1))) {
                 setActiveNext(true);
             }
-            if (activeIndex == (optionsLength - 1)) {
+            if (activeIndex == (optionsLength - 1) || finishOptions) {
                 setFinishOptions(true);
-                let variant = prepareVariant();
+                let variant = prepareVariant(optionsValuesCopy);
                 props.getVariantExtras(variant, item.item_id);
             }
         }
@@ -166,7 +172,7 @@ function Item(props) {
                         Choose your options
                     </div>
                     <div className='options_extras_div'>
-                        <div className='item_options'>
+                        {(props.options.length > 0) ? <div className='item_options'>
                             <OptionsToolbar
                                 optionName={(optionName == '') ? props.options[0].name : optionName}
                                 activeNext={activeNext}
@@ -187,17 +193,16 @@ function Item(props) {
                             >
                                 {Carousels}
                             </Carousel>
-                        </div>
-                        {/* <div className='extras_loader_progress'>
-                                <LinearProgress color="success" />
-                            </div> */}
-                        {finishOptions ? <div className='item_extras'>
+                        </div> : null}
+                        {(props.gettingVariantExtras || props.gettingItemExtras) ? <div className='extras_loader_progress'>
+                            <LinearProgress color="success" />
+                        </div> : (finishOptions || props.showExtras) ? <div className='item_extras'>
                             <div className='extras_literal'>
                                 Choose your extras
                             </div>
                             <div className='item_extras_list'>
                                 <List modifier={'noborder'}
-                                    dataSource={extras}
+                                    dataSource={props.extras}
                                     renderRow={(extra, idx) => {
                                         return (
                                             <ListItem tappable modifier='material'>
@@ -216,9 +221,9 @@ function Item(props) {
                                         );
                                     }} />
                             </div>
-                        </div> : null}
-                        {finishOptions ? <div className='checkout_btn_div'>
-                            <Button className='checkout_btn'>Checkout</Button>
+                            <div className='checkout_btn_div'>
+                                <Button className='checkout_btn'>Checkout</Button>
+                            </div>
                         </div> : null}
                     </div>
                 </div>
@@ -235,7 +240,11 @@ const mapStateToProps = (state) => {
         selectedStore: state.stores.selectedStore,
         selectedItem: state.stores.selectedItem,
         options: state.stores.options,
-        gettingOptions: state.stores.gettingOptions
+        gettingOptions: state.stores.gettingOptions,
+        gettingVariantExtras: state.stores.gettingVariantExtras,
+        gettingItemExtras: state.stores.gettingItemExtras,
+        extras: state.stores.extras,
+        showExtras: state.stores.showExtras
     }
 };
 
@@ -244,7 +253,8 @@ const mapDispatchToProps = (dispatch) => {
         setSelectedItem: (item) => dispatch({ type: actionsTypes.SETSELECTEDITEM, item: item }),
         getoptions: (item_id) => dispatch({ type: actionsTypes.GETITEMIOPTIONS, item_id: item_id }),
         getItemExtras: (item_id) => dispatch({ type: actionsTypes.GETITEMEXTRAS, item_id: item_id }),
-        getVariantExtras: (variant, item_id) => dispatch({ type: actionsTypes.GETVARIANTEXTRAS, variant: variant, item_id: item_id })
+        getVariantExtras: (variant, item_id) => dispatch({ type: actionsTypes.GETVARIANTEXTRAS, variant: variant, item_id: item_id }),
+        ItemWillUnmount: () => dispatch({ type: actionsTypes.ITEMWILLUNMOUNT })
     }
 };
 

@@ -19,7 +19,11 @@ const initialState = {
     selectedStore: {},
     selectedItem: {},
     options: [],
-    gettingOptions: true
+    gettingOptions: true,
+    gettingVariantExtras: false,
+    gettingItemExtras: false,
+    extras: [],
+    showExtras: false
 }
 
 const storesReducer = (state = initialState, action) => {
@@ -72,6 +76,34 @@ const storesReducer = (state = initialState, action) => {
                 ...state,
                 options: [...action.options],
                 gettingOptions: false
+            }
+        case actionsTypes.SETGETTINGVARIANTSTOTRUE:
+            return {
+                ...state,
+                gettingVariantExtras: true
+            }
+        case actionsTypes.SAVEVARIANEXTRASTSLOCALLY:
+            return {
+                ...state,
+                gettingVariantExtras: false,
+                extras: [...action.extras]
+            }
+        case actionsTypes.SETGETTINGITEMEXTRASTRUE:
+            return {
+                ...state,
+                gettingItemExtras: true
+            }
+        case actionsTypes.SAVEITEMEXTRASLOCALLY:
+            return {
+                ...state,
+                gettingItemExtras: false,
+                extras: [...action.extras],
+                showExtras: true,
+            }
+        case actionsTypes.ITEMWILLUNMOUNT:
+            return {
+                ...state,
+                showExtras: false
             }
 
     }

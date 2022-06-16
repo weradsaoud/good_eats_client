@@ -31,7 +31,11 @@ function* onGetItemOptions(action) {
     try {
         const response = yield getItemOptions(action.item_id);
         if(response.status == 200){
-            yield put({type: actionsTypes.SAVEOPTIONSLOCALLY, options: response.data});
+            if(response.data.length > 0){
+                yield put({type: actionsTypes.SAVEOPTIONSLOCALLY, options: response.data});
+            }else{
+                yield put({type: actionsTypes.GETITEMEXTRAS, item_id: action.item_id});
+            }
         }
     } catch (error) {
         console.log('err: ', error);
@@ -40,15 +44,27 @@ function* onGetItemOptions(action) {
 
 function* onGetVariantExtras(action){
     try {
+        yield put({type: actionsTypes.SETGETTINGVARIANTSTOTRUE})
         const response = yield getVariantExtras(action.variant, action.item_id);
         console.log('response: ', response);
+        if(response.status == 200){
+            yield put({type: actionsTypes.SAVEVARIANEXTRASTSLOCALLY, extras: response.data});
+        }
     } catch (error) {
-        
+        console.log('ERR in onGetVariantExtras: ', error);
     }
 }
 
 function* onGetItemExtras(action){
-    const response = yield getItemExtras(action.item_id);
+    try {
+        yield put({type: actionsTypes.SETGETTINGITEMEXTRASTRUE})
+        const response = yield getItemExtras(action.item_id);   
+        if(response.status == 200){
+            yield put({type: actionsTypes.SAVEITEMEXTRASLOCALLY, extras: response.data});
+        }
+    } catch (error) {
+        
+    }
 }
 
 function* watchGetStores() {
@@ -63,12 +79,12 @@ function* watchGetItemOptions() {
     yield takeEvery(actionsTypes.GETITEMIOPTIONS, onGetItemOptions)
 }
 
-function* watchGetItemExtras(){
-    yield takeEvery(actionsTypes.GETITEMEXTRAS, onGetItemExtras);
-}
-
 function* watchGetVariantExtras(){
     yield takeEvery(actionsTypes.GETVARIANTEXTRAS, onGetVariantExtras);
+}
+
+function* watchGetItemExtras(){
+    yield takeEvery(actionsTypes.GETITEMEXTRAS, onGetItemExtras);
 }
 
 export default function* storesSagas() {
@@ -76,7 +92,7 @@ export default function* storesSagas() {
         watchGetStores(),
         watchGetStoreGategories(),
         watchGetItemOptions(),
-        watchGetItemExtras(),
-        watchGetVariantExtras()
+        watchGetVariantExtras(),
+        watchGetItemExtras()
     ]);
 }
