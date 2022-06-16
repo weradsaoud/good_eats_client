@@ -93,12 +93,9 @@ class Network {
       headers: headers ?? {}
     })
       .then((response) => {
-        console.log("response from post: ", response);
-
         return Promise.resolve(response);
       })
       .catch((error) => {
-        console.log("err from post: ", error.response);
         return Promise.reject(error);
       });
   }

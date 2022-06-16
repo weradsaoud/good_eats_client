@@ -58,7 +58,6 @@ function StoresList(props: any) {
     if (props.gettingStores) {
         view = <LinearProgress color="success" />;
     } else {
-        console.log('props.stores: ', props.stores);
         view = (
             <div className="stores_body_content_wrapper">
                 <div className="stores_search_wrapper">

@@ -12,3 +12,11 @@ export const getStoreGategories = (id: number) => {
 export const getItemOptions = (item_id: number) => {
     return network.get(endPoints.getItemOptions, { params: { item_id: item_id } });
 };
+
+export const getItemExtras = (item_id: number) => {
+    return network.get(endPoints.getItemExtras, { params: { item_id: item_id } });
+};
+
+export const getVariantExtras = (variant: string, item_id: number) => {
+    return network.get(endPoints.getVariantExtras, { params: { variant: variant, item_id: item_id } });
+};

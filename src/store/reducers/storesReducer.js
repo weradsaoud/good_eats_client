@@ -17,11 +17,12 @@ const initialState = {
     storeCategories: [],
     gettingStoreCategories: true,
     selectedStore: {},
-    selectedItem: {}
+    selectedItem: {},
+    options: [],
+    gettingOptions: true
 }
 
 const storesReducer = (state = initialState, action) => {
-    console.log('state: ', state);
     switch (action.type) {
         case actionsTypes.SCROLL:
             return {
@@ -29,7 +30,6 @@ const storesReducer = (state = initialState, action) => {
                 scrollY: action.scrollY
             }
         case actionsTypes.SAVESTORESLOCALLY:
-            console.log('from storesReducer: ', action.stores);
             return {
                 ...state,
                 stores: [...action.stores],
@@ -62,11 +62,17 @@ const storesReducer = (state = initialState, action) => {
             };
 
         case actionsTypes.SETSELECTEDITEM:
-            console.log('reducer item: ', action.item);
             return {
                 ...state,
                 selectedItem: { ...action.item }
             };
+        case actionsTypes.SAVEOPTIONSLOCALLY:
+            console.log('actionsTypes.SAVEOPTIONSLOCALLY: ', action.options);
+            return {
+                ...state,
+                options: [...action.options],
+                gettingOptions: false
+            }
 
     }
     return state;

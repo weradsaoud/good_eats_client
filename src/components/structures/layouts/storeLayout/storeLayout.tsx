@@ -49,7 +49,6 @@ function StoreLayout(props: any) {
     };
     const toolBarBtnHandler = () => {
         setIsSideMenuOpen(!isSideMenuOpen);
-        console.log('isSideMenuOpen: ', isSideMenuOpen);
 
     };
     const onOpenSideMenu = () => {
@@ -59,8 +58,6 @@ function StoreLayout(props: any) {
         setIsSideMenuOpen(false);
     };
     const goToStores = () => {
-        console.log('stores clicked');
-
         navigate(routes.storesPageUrl);
     };
     return (

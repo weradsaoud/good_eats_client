@@ -17,10 +17,8 @@ function Store(props: any) {
     let location = useLocation();
     if (location.state) {
         store = location.state;
-        console.log('if store: ', store);
     } else {
         store = props.selectedStore;
-        console.log('else store: ', store);
     }
 
     useEffect(() => {
