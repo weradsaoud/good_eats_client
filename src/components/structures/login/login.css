@@ -1,0 +1,35 @@
+.login_content {
+    max-width: 600px;
+    padding: 4px 25px;
+    margin: 0 auto;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: calc(100vh - 55px);
+}
+
+.phone_div {
+    height: fit-content;
+    align-self: center;
+}
+
+.verification_div {
+    height: fit-content;
+    align-self: center;
+}
+
+.signin_btns_div {
+    margin-top: 10px;
+}
+
+.phone_input_div {
+    margin-bottom: 10px;
+}
+
+.verify_input_div {
+    margin-bottom: 10px;
+}
+
+.verify_btns_div {
+    margin-top: 10px;
+}
