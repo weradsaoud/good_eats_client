@@ -1,7 +1,8 @@
 import { KeyboardBackspace, ShoppingBasket } from "@mui/icons-material";
-import { LinearProgress } from "@mui/material";
+import { Badge, LinearProgress } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import React from "react";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router";
 import routes from "../../../globals/routes";
 import './itemtoolbar.css';
@@ -11,6 +12,9 @@ function ItemToolbar(props: any) {
     let navigate = useNavigate();
     const backToStore = () => {
         navigate(routes.storePageUrl);
+    };
+    const goToBasket = () => {
+        navigate(routes.basketPage);
     };
 
     return (
@@ -26,8 +30,10 @@ function ItemToolbar(props: any) {
 
                 </div>
                 <div className="item_topRight">
-                    <IconButton onClick={props.toggleSideMenu} className='nave_icon' aria-label="delete">
-                        <ShoppingBasket />
+                    <IconButton onClick={goToBasket} className='nave_icon' aria-label="delete">
+                        <Badge badgeContent={props.basket.length} color='error'>
+                            <ShoppingBasket color="action" />
+                        </Badge>
                     </IconButton>
                 </div>
             </div>
@@ -36,4 +42,16 @@ function ItemToolbar(props: any) {
     );
 }
 
-export default ItemToolbar;
+const mapStateToProps = (state: any) => {
+    return {
+        basket: state.stores.basket
+    }
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemToolbar);

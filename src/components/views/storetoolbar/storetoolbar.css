@@ -27,7 +27,8 @@
 
 .store_topRight {
     display: flex;
-    align-items: center;
+    text-align: start;
+    height: 100%;
 }
 
 .store_topLeft {

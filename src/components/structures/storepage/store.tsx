@@ -2,15 +2,19 @@ import { jsx } from '@emotion/react';
 import { ActionTypes } from '@mui/base';
 import { AccessTime, ShoppingBasket, Info, Search } from '@mui/icons-material';
 import { Avatar, Button, FormControl, Input, InputAdornment } from '@mui/material';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { List, ListItem } from 'react-onsenui';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import routes from '../../../globals/routes';
 import * as actionsTypes from '../../../store/actions/actionsTypes';
+import IModal from '../../views/modal/IModal';
 import './store.css';
 
 function Store(props: any) {
+
+    let [isModalOpen, setIsModalOpen] = useState(false);
+    let [item, setItem] = useState({});
 
     let navigate = useNavigate();
     let store: any;
@@ -68,8 +72,49 @@ function Store(props: any) {
     };
 
     const goToItem = (item: any) => {
-        navigate(routes.item, { state: item });
+        setItem(item);
+        if (canAddItemToBasket()) {
+            navigate(routes.item, { state: item });
+        } else {
+            setIsModalOpen(true);
+        }
     }
+
+    const canAddItemToBasket = () => {
+        if (props.basket.length > 0) {
+            if (props.basket[0].store.id == store.id) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    };
+
+    const inBasketCount = (item_id: string) => {
+        let sameItemsInBasket = props.basket.filter((basketItem: any, idx: number) => {
+            return (basketItem.item.item_id == item_id);
+        });
+        if (sameItemsInBasket && sameItemsInBasket.length > 0) {
+            let count: number = 0;
+            sameItemsInBasket.forEach((sameItem: any, idx: number) => {
+                count = count + sameItem.count;
+            });
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    const modalFirstBtnOnClick = () => {
+        navigate(routes.basketPage);
+    };
+
+    const modalSecondBtnOnClick = () => {
+        navigate(routes.item, { state: item });
+        props.emptyBasket();
+    };
 
     let view: JSX.Element;
     if (props.gettingStoreCategories) {
@@ -77,6 +122,14 @@ function Store(props: any) {
     } else {
         view = (
             <div id='store_info' style={{ "height": "calc(100vh - 280px)", "overflow": "scroll" }} onScroll={handleScroll}>
+                <IModal
+                    isOpen={isModalOpen}
+                    msg='Your basket contains items from another store.'
+                    firstBtnContent='Complete order'
+                    secondBtnContent='Start new order'
+                    firstBtnOnClick={modalFirstBtnOnClick}
+                    secondBtnOnClick={modalSecondBtnOnClick}
+                />
                 <div className='store_info_div'>
                     <div className='store_name_div'>
                         {store.name}
@@ -124,7 +177,7 @@ function Store(props: any) {
                         dataSource={props.storeCategories}
                         renderHeader={renderHeader}
                         renderRow={(cate: any, idx: number) => (
-                            <ListItem expandable tappable modifier='nodivider' >
+                            <ListItem key={idx} expandable tappable modifier='nodivider' >
                                 <div className="left">
                                     <div className='cate_item'>
                                         <div className='cate_item_header'>
@@ -140,39 +193,45 @@ function Store(props: any) {
                                         //dataSource={[{ id: "1", itemName: "item1", description: "it is item1, and it is very delicious, it is made from natural indrediants ", price: '45$', img: "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/w_1280%2Cc_limit/the-ultimate-hamburger.jpg" }, { id: "2", itemName: "item2", description: "it is item2", price: '45$', img: "https://mms.businesswire.com/media/20200526005029/en/793342/5/NDW_mediaImage-01.jpg" }, { id: "3", itemName: "item3", description: "it is item3", price: '45$', img: "https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900" }, { id: "4", itemName: "item4", description: "it is item4", price: '45$', img: "https://static.onecms.io/wp-content/uploads/sites/43/2022/06/01/414768-green-salad-Nichele-4x3-1.jpg" }]}
                                         dataSource={cate.items}
                                         renderHeader={renderItemsHeader}
-                                        renderRow={(item: any, idx: number) => (
-                                            <ListItem tappable modifier='chevron' onClick={() => goToItem(item)}>
-                                                <div className='left'>
-                                                    <div className="listitem_store_logo_div">
-                                                        <Avatar
-                                                            alt={item.item_name}
-                                                            src={item.item_img}
-                                                            sx={{ width: 54, height: 54 }}
-                                                            variant="rounded"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div id='cate_item_center' className='center'>
-                                                    <div className="cate_item_wrapper">
-                                                        <div className="listitem_cate_props_div">
-                                                            <div className="listitem_store_name_div">
-                                                                <strong className="listitem_store_name">
-                                                                    {item.item_name}
-                                                                </strong>
-                                                            </div>
-                                                            <div className="listitem_store_description_div">
-                                                                {item.item_description}
-                                                            </div>
-                                                        </div>
-                                                        <div className='cate_item_price'>
-                                                            <div className='item_price_from'>From</div>
-                                                            <div className='item_price'>{item.item_price}</div>
+                                        renderRow={(item: any, idx: number) => {
+                                            let countInBasket = inBasketCount(item.item_id);
+                                            return (
+                                                <ListItem key={idx} tappable modifier='chevron' onClick={() => goToItem(item)}>
+                                                    <div className='left'>
+                                                        <div className="listitem_store_logo_div">
+                                                            <Avatar
+                                                                alt={item.item_name}
+                                                                src={item.item_img}
+                                                                sx={{ width: 54, height: 54 }}
+                                                                variant="rounded"
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className='rigth'></div>
-                                            </ListItem>
-                                        )}
+                                                    <div id='cate_item_center' className='center'>
+                                                        <div className="cate_item_wrapper">
+                                                            <div className="listitem_cate_props_div">
+                                                                <div className="listitem_store_name_div">
+                                                                    <strong className="listitem_store_name">
+                                                                        {item.item_name}
+                                                                    </strong>
+                                                                </div>
+                                                                <div className="listitem_store_description_div">
+                                                                    {item.item_description}
+                                                                </div>
+                                                                {(countInBasket > 0) ? <div className='listitem_count_inBasket'>
+                                                                    <ShoppingBasket style={{ 'color': 'rgba(198, 43, 43, 0.6)' }} fontSize='small' /><span className='inBasket_span'>{countInBasket} in basket</span>
+                                                                </div> : null}
+                                                            </div>
+                                                            <div className='cate_item_price'>
+                                                                <div className='item_price_from'>From</div>
+                                                                <div className='item_price'>{item.item_price}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='rigth'></div>
+                                                </ListItem>
+                                            )
+                                        }}
                                     />
                                 </div>
                             </ListItem>
@@ -194,7 +253,8 @@ const mapStateToProps = (state: any) => {
         scrollY: state.stores.scrollY,
         storeCategories: state.stores.storeCategories,
         gettingStoreCategories: state.stores.gettingStoreCategories,
-        selectedStore: state.stores.selectedStore
+        selectedStore: state.stores.selectedStore,
+        basket: state.stores.basket
     }
 };
 
@@ -202,7 +262,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         handleScroll: (scrollY: number) => dispatch({ type: actionsTypes.SCROLL, scrollY: scrollY }),
         getStoreGategories: (id: number) => dispatch({ type: actionsTypes.GETSTOREGATEGORIES, storeId: id }),
-        setSelectedStore: (store: any) => dispatch({ type: actionsTypes.SETSELECTEDSTORE, store: store })
+        setSelectedStore: (store: any) => dispatch({ type: actionsTypes.SETSELECTEDSTORE, store: store }),
+        emptyBasket: () => dispatch({type: actionsTypes.EMPTYBASKET})
     }
 };
 

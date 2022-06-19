@@ -39,7 +39,7 @@
 }
 
 .item_content {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 205px);
     overflow: scroll;
 }
 
@@ -69,11 +69,23 @@
     text-align: center;
     justify-content: center;
     width: 100%;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    position: fixed;
+    bottom: 5px;
+    left: 0px;
 }
 
 .checkout_btn {
-    width: 100% !important;
+    width: 90% !important;
     background-color: rgb(10, 131, 5) !important;
+}
+
+.add_to_basket_for{
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+.item_variant_price{
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
 }

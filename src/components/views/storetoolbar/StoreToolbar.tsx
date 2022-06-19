@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import "./storetoolbar.css";
-import { NotificationsNone, Language, Settings, ArrowRightTwoTone } from "@mui/icons-material";
-import { NavLink } from "react-router-dom";
+import { NotificationsNone, Language, Settings, ArrowRightTwoTone, ShoppingBasket } from "@mui/icons-material";
+import { NavLink, useNavigate } from "react-router-dom";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import { ToolbarButton } from "react-onsenui";
-import { Avatar, Button, IconButton, LinearProgress } from "@mui/material";
+import { Avatar, Badge, Button, IconButton, LinearProgress } from "@mui/material";
 import { Dehaze } from '@mui/icons-material'
 import { connect } from "react-redux";
 import * as actionsTypes from '../../../store/actions/actionsTypes';
+import routes from "../../../globals/routes";
 
 
 function getStyle(el: any, styleProp: any) {
@@ -46,6 +47,7 @@ function StoreToolbar(props: any) {
     let cover = props.storeCover;
     let logo = props.storeLogo;
 
+    let navigate = useNavigate();
 
     useEffect(() => {
         let store_topbar = document.getElementById('store_topbar_id');
@@ -97,6 +99,10 @@ function StoreToolbar(props: any) {
         );
     }, []);
 
+    const goToBasket = () => {
+        navigate(routes.basketPage);
+    }
+
     return (
         <div id='store_topbar_id' className="store_topbar" /*style={{ "backgroundImage": `url(${cover})` }}*/>
             <img id="store_header_img_id" className="store_header_img" src={cover} />
@@ -118,6 +124,11 @@ function StoreToolbar(props: any) {
                     <p id='stor_topbar_name'>{props.storeName}</p>
                 </div>
                 <div className="store_topRight">
+                    {(props.basket.length > 0) ? <IconButton onClick={goToBasket} className='nave_icon' aria-label="delete">
+                        <Badge badgeContent={props.basket.length} color='error'>
+                            <ShoppingBasket color="action" />
+                        </Badge>
+                    </IconButton> : null}
                 </div>
             </div>
             {(props.gettingStoreCategories) ? <LinearProgress style={{ "zIndex": "-100" }} color="success" /> : null}
@@ -128,7 +139,8 @@ function StoreToolbar(props: any) {
 const mapStateToProps = (state: any) => {
     return {
         scrollY: state.stores.scrollY,
-        gettingStoreCategories: state.stores.gettingStoreCategories
+        gettingStoreCategories: state.stores.gettingStoreCategories,
+        basket: state.stores.basket
     }
 };
 

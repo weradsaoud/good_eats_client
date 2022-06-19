@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Carousel, CarouselItem, Checkbox, Radio, List, ListItem, Toolbar, Page, Button } from 'react-onsenui';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import ItemToolbar from '../../views/itemtoolbar/itemToolbar';
 import './item.css';
 import OptionsToolbar from '../../views/optionstoolbar/OptionsToolbat';
 import * as actionsTypes from '../../../store/actions/actionsTypes';
 import { connect } from "react-redux";
 import { LinearProgress } from '@mui/material';
+import routes from '../../../globals/routes';
 
 function Item(props) {
 
-    let options = [];//[{ optionId: '1', name: 'option1', values: ['val1', 'val2', 'val3'] }, { optionId: '2', name: 'option2', values: ['val1', 'val2', 'val3'] }, { optionId: '3', name: 'option3', values: ['val1', 'val2', 'val3'] }, { optionId: '4', name: 'option4', values: ['val1', 'val2', 'val3'] }, { optionId: '5', name: 'option5', values: ['val1', 'val2', 'val3'] }, { optionId: '6', name: 'option6', values: ['val1', 'val2', 'val3'] }];
-    let extras = [{ extraId: '1', name: 'extra1', price: 10 }, { extraId: '2', name: 'extra2', price: 0.6 }, { extraId: '3', name: 'extra3', price: 0.5 }, { extraId: '4', name: 'extra4', price: 0.7 }]
+    //let options = [];//[{ optionId: '1', name: 'option1', values: ['val1', 'val2', 'val3'] }, { optionId: '2', name: 'option2', values: ['val1', 'val2', 'val3'] }, { optionId: '3', name: 'option3', values: ['val1', 'val2', 'val3'] }, { optionId: '4', name: 'option4', values: ['val1', 'val2', 'val3'] }, { optionId: '5', name: 'option5', values: ['val1', 'val2', 'val3'] }, { optionId: '6', name: 'option6', values: ['val1', 'val2', 'val3'] }];
+    //let extras = [{ extraId: '1', name: 'extra1', price: 10 }, { extraId: '2', name: 'extra2', price: 0.6 }, { extraId: '3', name: 'extra3', price: 0.5 }, { extraId: '4', name: 'extra4', price: 0.7 }]
 
 
     let [activeIndex, setActiveIndex] = useState(0);
@@ -21,6 +22,11 @@ function Item(props) {
     let [optionId, setOptionId] = useState('');
     let [optionsValues, setOptionsValues] = useState([]);
     let [finishOptions, setFinishOptions] = useState(false);
+    //
+    let [variant, setVariant] = useState({}); // {option: value}
+    let [extras, setExtras] = useState([]); // [{id, name}]
+    //let [addToBasketClicked, setAddToBasketClicked] = useState(false);
+
     var optionsLength = props.options.length;
 
     let location = useLocation();
@@ -56,6 +62,8 @@ function Item(props) {
         }
 
     }, [props.options]);
+
+    let navigate = useNavigate();
 
     const previousOption = () => {
         if (activeIndex > 0) {
@@ -96,6 +104,7 @@ function Item(props) {
         optionsValuesCopy.forEach(ov => {
             variant[ov.name] = ov.value;
         });
+        setVariant(variant);
         return JSON.stringify(variant);
     };
     const optionValueChecked = (e, val) => {
@@ -124,8 +133,57 @@ function Item(props) {
             }
         }
     };
-    const extraSelected = (extra) => {
-        console.log('exra: ', extra);
+    const extraSelected = (e, extra) => {
+        if (e.target.checked) {
+            let extrasCopy = [...extras];
+            extrasCopy.push(extra);
+            setExtras(extrasCopy);
+            let extraPrice;
+            if (extra.price == '') {
+                extraPrice = 0;
+            } else {
+                extraPrice = parseFloat(extra.price);
+            }
+            let variant_item_price;
+            if (props.variant_item_price == '') {
+                variant_item_price = 0;
+            } else {
+                variant_item_price = parseFloat(props.variant_item_price)
+            }
+            let new_variant_item_price = (variant_item_price + extraPrice).toString();
+            props.setVariantItemPrice(new_variant_item_price);
+        } else {
+            let extrasCopy = extras.filter((extra_, idx) => {
+                return extra_.extraId != extra.extraId;
+            });
+            setExtras(extrasCopy);
+            let extraPrice;
+            if (extra.price == '') {
+                extraPrice = 0;
+            } else {
+                extraPrice = parseFloat(extra.price);
+            }
+            let variant_item_price;
+            if (props.variant_item_price == '') {
+                variant_item_price = 0;
+            } else {
+                variant_item_price = parseFloat(props.variant_item_price);
+            }
+            let new_variant_item_price = (variant_item_price - extraPrice).toString();
+            props.setVariantItemPrice(new_variant_item_price);
+        }
+    };
+    const addToBasket = () => {
+        let basketItem = {
+            store: props.selectedStore,
+            item: item,
+            variant: variant,
+            variantId: props.variant_id,
+            extras: extras,
+            basketItemPrice: props.variant_item_price
+        }
+        props.addToBasket(basketItem);
+        navigate(routes.storePageUrl);
     };
     let Carousels = null;
     if (props.options.length > 0) {
@@ -168,9 +226,9 @@ function Item(props) {
                     <div className='item_name_div'>
                         {item.item_name}
                     </div>
-                    <div className='item_options_literal'>
+                    {(props.options.length > 0) ? <div className='item_options_literal'>
                         Choose your options
-                    </div>
+                    </div> : null}
                     <div className='options_extras_div'>
                         {(props.options.length > 0) ? <div className='item_options'>
                             <OptionsToolbar
@@ -197,18 +255,18 @@ function Item(props) {
                         {(props.gettingVariantExtras || props.gettingItemExtras) ? <div className='extras_loader_progress'>
                             <LinearProgress color="success" />
                         </div> : (finishOptions || props.showExtras) ? <div className='item_extras'>
-                            <div className='extras_literal'>
+                            {(props.extras.length > 0) ? <div className='extras_literal'>
                                 Choose your extras
-                            </div>
-                            <div className='item_extras_list'>
+                            </div> : null}
+                            {(props.extras.length > 0) ? <div className='item_extras_list'>
                                 <List modifier={'noborder'}
                                     dataSource={props.extras}
                                     renderRow={(extra, idx) => {
                                         return (
-                                            <ListItem tappable modifier='material'>
+                                            <ListItem key={idx} tappable modifier='material'>
                                                 <div className='left'>
                                                     <Checkbox
-                                                        onChange={(e) => extraSelected(extra)}
+                                                        onChange={(e) => extraSelected(e, extra)}
                                                         modifier='material' />
                                                 </div>
                                                 <div className='center'>
@@ -220,12 +278,12 @@ function Item(props) {
                                             </ListItem>
                                         );
                                     }} />
-                            </div>
-                            <div className='checkout_btn_div'>
-                                <Button className='checkout_btn'>Checkout</Button>
-                            </div>
+                            </div> : null}
                         </div> : null}
                     </div>
+                    {(finishOptions || props.showExtras) ? <div className='checkout_btn_div'>
+                        <Button onClick={addToBasket} className='checkout_btn'><span className='add_to_basket_for'>Add to basket for </span><span className='item_variant_price'>{props.variant_item_price}</span></Button>
+                    </div> : null}
                 </div>
             }
 
@@ -244,7 +302,12 @@ const mapStateToProps = (state) => {
         gettingVariantExtras: state.stores.gettingVariantExtras,
         gettingItemExtras: state.stores.gettingItemExtras,
         extras: state.stores.extras,
-        showExtras: state.stores.showExtras
+        showExtras: state.stores.showExtras,
+        variant_item_price: state.stores.variant_item_price,
+        variant_id: state.stores.variant_id,
+        selectedVariant: state.stores.selectedVariant,
+        totalPrice: state.stores.totalPrice,
+        showCheckout: state.stores.showCheckout
     }
 };
 
@@ -254,7 +317,9 @@ const mapDispatchToProps = (dispatch) => {
         getoptions: (item_id) => dispatch({ type: actionsTypes.GETITEMIOPTIONS, item_id: item_id }),
         getItemExtras: (item_id) => dispatch({ type: actionsTypes.GETITEMEXTRAS, item_id: item_id }),
         getVariantExtras: (variant, item_id) => dispatch({ type: actionsTypes.GETVARIANTEXTRAS, variant: variant, item_id: item_id }),
-        ItemWillUnmount: () => dispatch({ type: actionsTypes.ITEMWILLUNMOUNT })
+        ItemWillUnmount: () => dispatch({ type: actionsTypes.ITEMWILLUNMOUNT }),
+        setVariantItemPrice: (variant_item_price) => dispatch({ type: actionsTypes.SETVARIANTITEMPRICE, variant_item_price: variant_item_price }),
+        addToBasket: (basketItem) => dispatch({ type: actionsTypes.ADDTOBASKET, basketItem: basketItem })
     }
 };
 

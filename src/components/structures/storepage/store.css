@@ -215,3 +215,15 @@
     letter-spacing: -.01em;
     font-weight: 900;
 }
+.inBasket_span{
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    color: rgba(198, 43, 43, 0.6);
+    letter-spacing: -.01em;
+    font-weight: 900;
+    padding-left: 5px;
+}
+.listitem_count_inBasket{
+    display: flex;
+    text-align: center;
+}

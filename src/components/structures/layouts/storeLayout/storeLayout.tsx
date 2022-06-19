@@ -109,7 +109,8 @@ function StoreLayout(props: any) {
 
 const mapStateToProps = (state: any) => {
     return {
-        selectedStore: state.stores.selectedStore
+        selectedStore: state.stores.selectedStore,
+        basket: state.stores.basket
     }
 };
 

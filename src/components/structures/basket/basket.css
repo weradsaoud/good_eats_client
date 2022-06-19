@@ -1,0 +1,156 @@
+.order_content {
+    max-width: 600px;
+    padding: 4px 25px;
+    margin: 0 auto;
+}
+
+.your_oreder_literal {
+    width: fit-content;
+    color: #181d1e;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.basket_list_header {
+    width: fit-content;
+    color: #1a1824;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.basket_controls {
+    display: flex;
+}
+
+.basket_item_count {
+    margin: 5px 10px 0px 10px;
+}
+
+.basket_item_name {
+    width: fit-content;
+    color: #1f1f21;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 10px;
+}
+
+.basket_item_delete {
+    background: #ff2650 !important;
+}
+
+.basket_item_info_controls {
+    margin-right: auto;
+    justify-self: flex-start;
+}
+
+.basket_item_price {
+    align-self: center;
+    justify-self: flex-end;
+    padding-right: 5px;
+}
+
+.basket_item_center {
+    display: flex;
+    width: 100%;
+}
+
+.basket_item_price {
+    width: fit-content;
+    color: #1f1f21;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.basket_item_options_extras {
+    padding-left: 78px;
+}
+
+.basket_item_options_literal {
+    width: fit-content;
+    color: #1f1f21;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.basket_item_extras_literal {
+    width: fit-content;
+    color: #1f1f21;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.basket_item_option_name {
+    width: fit-content;
+    color: #292933;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.basket_item_option_value {
+    width: fit-content;
+    color: #19191d;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.basket_item_extra_name {
+    width: fit-content;
+    color: #292933;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: auto;
+}
+
+.basket_item_extra_price {
+    width: fit-content;
+    color: #19191d;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.basket_items_list {
+    height: calc(100vh - 160px);
+    overflow: scroll;
+}
+
+.basket_checkout_btn_div {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    bottom: 5px;
+    left: 0px;
+}
+
+.basket_checkout_btn {
+    width: 90% !important;
+    background-color: rgb(10, 131, 5) !important;
+}
+
+.checkout_btn_content {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-right: 20px;
+}
+
+.checkout_btn_price {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}

@@ -48,7 +48,7 @@ function* onGetVariantExtras(action){
         const response = yield getVariantExtras(action.variant, action.item_id);
         console.log('response: ', response);
         if(response.status == 200){
-            yield put({type: actionsTypes.SAVEVARIANEXTRASTSLOCALLY, extras: response.data});
+            yield put({type: actionsTypes.SAVEVARIANEXTRASTSLOCALLY, data: response.data});
         }
     } catch (error) {
         console.log('ERR in onGetVariantExtras: ', error);
@@ -60,7 +60,7 @@ function* onGetItemExtras(action){
         yield put({type: actionsTypes.SETGETTINGITEMEXTRASTRUE})
         const response = yield getItemExtras(action.item_id);   
         if(response.status == 200){
-            yield put({type: actionsTypes.SAVEITEMEXTRASLOCALLY, extras: response.data});
+            yield put({type: actionsTypes.SAVEITEMEXTRASLOCALLY, data: response.data});
         }
     } catch (error) {
         
