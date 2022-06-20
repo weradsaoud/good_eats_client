@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import GoodEats_Client from './components/structures/goodeats/GoodEats_Client';
@@ -12,6 +12,11 @@ import 'firebase/compat/auth';
 
 function App() {
   //const [user] = useAuthState(auth);
+  useEffect(() => {
+    return () => {
+      auth.signOut();
+    };
+  });
   return (
     <BrowserRouter>
       <GoodEats_Client />

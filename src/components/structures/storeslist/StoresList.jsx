@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Page, List, ListItem, SearchInput, PullHook, Icon } from "react-onsenui";
-import { AccountCircle, Login, Store, Search, ShoppingBasket, AccessTime } from '@mui/icons-material';
-import { Avatar, Button, FormControl, IconButton, Input, InputAdornment, LinearProgress } from '@mui/material';
+import { Page, List, ListItem, Dialog } from "react-onsenui";
+import { Search, ShoppingBasket, AccessTime } from '@mui/icons-material';
+import { Avatar, Button, FormControl, Input, InputAdornment, LinearProgress } from '@mui/material';
 import './storeslist.css';
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import routes from "../../../globals/routes";
 import { connect } from "react-redux";
 import * as actionsTypes from '../../../store/actions/actionsTypes';
+import ons from "onsenui";
 
-function StoresList(props: any) {
+function StoresList(props) {
 
     let [pullHookState, setPullHookState] = useState('');
     let navigate = useNavigate();
 
     useEffect(() => {
-        props.getStores();
 
+        props.getStores();
         return () => {
             props.unmountStoresLists();
         };
@@ -43,17 +44,17 @@ function StoresList(props: any) {
         );
     };
 
-    const onChange = (pullState: string) => {
+    const onChange = (pullState) => {
 
     };
     const onLoad = () => {
 
     };
-    const storeClickHandler = (store: any) => {
+    const storeClickHandler = (store) => {
         navigate(routes.storePageUrl, { state: store });
     };
 
-    let view: JSX.Element;
+    let view;
 
     if (props.gettingStores) {
         view = <LinearProgress color="success" />;
@@ -78,10 +79,10 @@ function StoresList(props: any) {
                     dataSource={props.stores}
                     //renderHeader={renderHeader}
                     renderRow={
-                        (row: any, idx: number) => {
-                            let orderingTypes: string = '';
+                        (row, idx) => {
+                            let orderingTypes = '';
                             if (row.orderingTypes && row.orderingTypes.length > 0) {
-                                row.orderingTypes.forEach((type: any, idx: number) => {
+                                row.orderingTypes.forEach((type, idx) => {
                                     if (idx == 0) {
                                         orderingTypes = type;
                                     } else {
@@ -145,14 +146,14 @@ function StoresList(props: any) {
     return view;
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
     return {
         stores: state.stores.stores,
         gettingStores: state.stores.gettingStores
     }
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         getStores: () => dispatch({ type: actionsTypes.GETSTORES }),
         unmountStoresLists: () => dispatch({ type: actionsTypes.UNMOUNTSTORESLISTS })

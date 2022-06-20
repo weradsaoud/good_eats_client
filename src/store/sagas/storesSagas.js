@@ -1,6 +1,13 @@
 import { takeEvery, all, put } from 'redux-saga/effects';
 import * as actionsTypes from '../actions/actionsTypes';
-import { getStores, getStoreGategories, getItemOptions,getItemExtras, getVariantExtras } from '../../API/api';
+import {
+    getStores,
+    getStoreGategories,
+    getItemOptions,
+    getItemExtras,
+    getVariantExtras,
+    sendOrder
+} from '../../API/api';
 
 
 function* onGetStores(action) {
@@ -30,11 +37,11 @@ function* onGetStoreGategories(action) {
 function* onGetItemOptions(action) {
     try {
         const response = yield getItemOptions(action.item_id);
-        if(response.status == 200){
-            if(response.data.length > 0){
-                yield put({type: actionsTypes.SAVEOPTIONSLOCALLY, options: response.data});
-            }else{
-                yield put({type: actionsTypes.GETITEMEXTRAS, item_id: action.item_id});
+        if (response.status == 200) {
+            if (response.data.length > 0) {
+                yield put({ type: actionsTypes.SAVEOPTIONSLOCALLY, options: response.data });
+            } else {
+                yield put({ type: actionsTypes.GETITEMEXTRAS, item_id: action.item_id });
             }
         }
     } catch (error) {
@@ -42,28 +49,40 @@ function* onGetItemOptions(action) {
     }
 }
 
-function* onGetVariantExtras(action){
+function* onGetVariantExtras(action) {
     try {
-        yield put({type: actionsTypes.SETGETTINGVARIANTSTOTRUE})
+        yield put({ type: actionsTypes.SETGETTINGVARIANTSTOTRUE })
         const response = yield getVariantExtras(action.variant, action.item_id);
         console.log('response: ', response);
-        if(response.status == 200){
-            yield put({type: actionsTypes.SAVEVARIANEXTRASTSLOCALLY, data: response.data});
+        if (response.status == 200) {
+            yield put({ type: actionsTypes.SAVEVARIANEXTRASTSLOCALLY, data: response.data });
         }
     } catch (error) {
         console.log('ERR in onGetVariantExtras: ', error);
     }
 }
 
-function* onGetItemExtras(action){
+function* onGetItemExtras(action) {
     try {
-        yield put({type: actionsTypes.SETGETTINGITEMEXTRASTRUE})
-        const response = yield getItemExtras(action.item_id);   
-        if(response.status == 200){
-            yield put({type: actionsTypes.SAVEITEMEXTRASLOCALLY, data: response.data});
+        yield put({ type: actionsTypes.SETGETTINGITEMEXTRASTRUE })
+        const response = yield getItemExtras(action.item_id);
+        if (response.status == 200) {
+            yield put({ type: actionsTypes.SAVEITEMEXTRASLOCALLY, data: response.data });
         }
     } catch (error) {
-        
+
+    }
+}
+
+function* onSendOrder(action) {
+    try {
+        yield put({type: actionsTypes.SENDINGORDER})
+        const response = yield sendOrder(action.order);
+        if(response.status == 200){
+            yield put({type: actionsTypes.ORDERSUCCESS});
+        }
+    } catch (error) {
+        yield put({type: actionsTypes.ORDERFAILED})
     }
 }
 
@@ -79,12 +98,16 @@ function* watchGetItemOptions() {
     yield takeEvery(actionsTypes.GETITEMIOPTIONS, onGetItemOptions)
 }
 
-function* watchGetVariantExtras(){
+function* watchGetVariantExtras() {
     yield takeEvery(actionsTypes.GETVARIANTEXTRAS, onGetVariantExtras);
 }
 
-function* watchGetItemExtras(){
+function* watchGetItemExtras() {
     yield takeEvery(actionsTypes.GETITEMEXTRAS, onGetItemExtras);
+}
+
+function* watchSendOrder() {
+    yield takeEvery(actionsTypes.SENDORDER, onSendOrder);
 }
 
 export default function* storesSagas() {
@@ -93,6 +116,7 @@ export default function* storesSagas() {
         watchGetStoreGategories(),
         watchGetItemOptions(),
         watchGetVariantExtras(),
-        watchGetItemExtras()
+        watchGetItemExtras(),
+        watchSendOrder()
     ]);
 }

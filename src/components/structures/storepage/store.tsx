@@ -126,6 +126,7 @@ function Store(props: any) {
                     isOpen={isModalOpen}
                     msg='Your basket contains items from another store.'
                     firstBtnContent='Complete order'
+                    secondBtn = {true}
                     secondBtnContent='Start new order'
                     firstBtnOnClick={modalFirstBtnOnClick}
                     secondBtnOnClick={modalSecondBtnOnClick}

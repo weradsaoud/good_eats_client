@@ -26,7 +26,10 @@ const initialState = {
     showExtras: false,
     variant_item_price: '',
     variant_id: '',
-    basket: []
+    basket: [],
+    sendingOrder: false,
+    orderSuccess: false,
+    orderFailure: false,
 }
 
 const storesReducer = (state = initialState, action) => {
@@ -131,7 +134,7 @@ const storesReducer = (state = initialState, action) => {
         case actionsTypes.ADDTOBASKET:
             console.log('action basketItem: ', action.basketItem);
             let sameItems_add = state.basket.filter((basketItem, idx) => {
-                console.log(`basket item ${idx}: `,  basketItem);
+                console.log(`basket item ${idx}: `, basketItem);
                 if (
                     (basketItem.item.item_id == action.basketItem.item.item_id)
                     &&
@@ -139,7 +142,7 @@ const storesReducer = (state = initialState, action) => {
                     if (basketItem.extras.length == action.basketItem.extras.length) {
                         let equal = true;
                         basketItem.extras.forEach((extra, idx) => {
-                            equal = equal && action.basketItem.extras.filter(e=>(e.extraId == extra.extraId));
+                            equal = equal && action.basketItem.extras.filter(e => (e.extraId == extra.extraId));
                         });
                         return equal;
                     } else {
@@ -280,6 +283,38 @@ const storesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 basket: []
+            }
+        case actionsTypes.ORDERSUCCESS:
+            return {
+                ...state,
+                basket: [],
+                orderSuccess: true,
+                sendingOrder: false
+            }
+        case actionsTypes.ORDERFAILED:
+            return {
+                ...state,
+                orderFailure: true,
+                sendingOrder: false
+            }
+        case actionsTypes.LOGINWILLUNMOUNT:
+            return {
+                ...state,
+                sendingOrder: false,
+                orderSuccess: false,
+                orderFailure: false,
+            }
+        case actionsTypes.SENDINGORDER:
+            return {
+                ...state,
+                sendingOrder: true
+            }
+        case actionsTypes.BASKETWILLUNMOUNT:
+            return {
+                ...state,
+                sendingOrder: false,
+                orderSuccess: false,
+                orderFailure: false,
             }
     }
     return state;

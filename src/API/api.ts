@@ -20,3 +20,7 @@ export const getItemExtras = (item_id: number) => {
 export const getVariantExtras = (variant: string, item_id: number) => {
     return network.get(endPoints.getVariantExtras, { params: { variant: variant, item_id: item_id } });
 };
+
+export const sendOrder = (order: any) => {
+    return network.post(endPoints.order, { params: { order: { ...order } } });
+}

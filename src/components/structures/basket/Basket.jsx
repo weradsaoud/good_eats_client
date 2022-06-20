@@ -1,6 +1,6 @@
 import { Add, Delete, Mail } from "@mui/icons-material";
-import { Avatar, Badge, IconButton } from "@mui/material";
-import React from "react";
+import { Avatar, Badge, CircularProgress, IconButton } from "@mui/material";
+import React, { useEffect } from "react";
 import { Button, List, ListItem } from "react-onsenui";
 import { connect } from "react-redux";
 import BasketToolbar from "../../views/baskettoolbar/BasketToolbar";
@@ -8,8 +8,14 @@ import './basket.css'
 import * as actionsTypes from '../../../store/actions/actionsTypes';
 import { useNavigate } from "react-router";
 import routes from "../../../globals/routes";
+import { auth } from "../../../globals/firebase";
+import IModal from '../../views/modal/IModal';
 
 function Basket(props) {
+
+    useEffect(() => {
+        return () => props.basketWillUnmount();
+    });
 
     let navigate = useNavigate();
 
@@ -62,14 +68,59 @@ function Basket(props) {
         return totalPrice;
     }
 
-    const checkout = () => {
-        navigate(routes.loginPageUrl);
+    const prepareOrder = (phoneNumber) => {
+        let order = props.basket.map((basketItem, idx) => {
+            let extras_ids = basketItem.extras.map((extra, idx) => {
+                return extra.extraId;
+            });
+            return {
+                phoneNumber: phoneNumber,
+                store_id: basketItem.store.id,
+                item_id: basketItem.item.item_id,
+                variant_id: (basketItem.variantId == '') ? '' : basketItem.variantId,
+                extras_ids: extras_ids,
+                count: basketItem.count,
+                orderItem_price: basketItem.basketItemPrice
+            };
+        });
+        return order;
     };
+
+    const checkout = () => {
+        if (auth.currentUser) {
+            let order = prepareOrder(auth.currentUser.phoneNumber);
+            props.sendOrder(order);
+        } else {
+            navigate(routes.loginPageUrl, { state: routes.basketPage });
+        }
+    };
+
+    const modalFirstBtnOnClick_success = () => {
+        navigate(routes.storesPageUrl);
+    }
+
+    const modalFirstBtnOnClick_fialure = () => {
+        navigate(routes.basketPage);
+    }
 
     return (
         <div className="basket_content">
             <BasketToolbar />
             <div className="order_content">
+                {props.orderSuccess ? <IModal
+                    isOpen={props.orderSuccess}
+                    msg='Your order sent successfully.'
+                    firstBtnContent='Ok'
+                    secondBtn={false}
+                    firstBtnOnClick={modalFirstBtnOnClick_success}
+                /> : null}
+                {props.orderFailure ? <IModal
+                    isOpen={props.orderFailure}
+                    msg='Your order failed, Please, try again.'
+                    firstBtnContent='Ok'
+                    secondBtn={false}
+                    firstBtnOnClick={modalFirstBtnOnClick_fialure}
+                /> : null}
                 <div className="your_oreder_literal">
                     Your order
                 </div>
@@ -193,10 +244,10 @@ function Basket(props) {
                     />
                 </div>
                 {(props.basket.length > 0) ? <div className="basket_checkout_btn_div">
-                    <Button onClick={checkout} className="basket_checkout_btn">
+                    {(!props.sendingOrder) ? <Button onClick={checkout} className="basket_checkout_btn">
                         <span className="checkout_btn_content">Checkout</span>
                         <span className="checkout_btn_price">{calculateTotalPrice()}</span>
-                    </Button>
+                    </Button> : <CircularProgress color="success" />}
                 </div> : null}
             </div>
         </div>
@@ -207,14 +258,18 @@ function Basket(props) {
 const mapStateToProps = (state) => {
     return {
         basket: state.stores.basket,
-        totalPrice: state.stores.totalPrice
+        sendingOrder: state.stores.sendingOrder,
+        orderSuccess: state.stores.orderSuccess,
+        orderFailure: state.stores.orderFailure,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteBasketItem: (basketItem) => dispatch({ type: actionsTypes.REMOVEFROMTOBASKET, basketItem: basketItem }),
-        incrementCount: (basketItem) => dispatch({ type: actionsTypes.INCREMENTCOUNT, basketItem: basketItem })
+        incrementCount: (basketItem) => dispatch({ type: actionsTypes.INCREMENTCOUNT, basketItem: basketItem }),
+        sendOrder: (order) => dispatch({ type: actionsTypes.SENDORDER, order: order }),
+        basketWillUnmount: () => dispatch({type: actionsTypes.BASKETWILLUNMOUNT})
     }
 };
 

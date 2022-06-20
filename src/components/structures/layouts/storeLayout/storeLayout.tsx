@@ -8,7 +8,7 @@ import {
     ListItem
 } from "react-onsenui";
 import logo from '../../../../../src/res/logo.png';
-import { Login, Store } from '@mui/icons-material';
+import { Login, Logout, Store } from '@mui/icons-material';
 import { IconButton, LinearProgress } from '@mui/material';
 import './storelayout.css';
 import Toolbar from "../../../views/Toolbar/Toolbar";
@@ -16,10 +16,13 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import routes from "../../../../globals/routes";
 import StoreToolbar from "../../../views/storetoolbar/StoreToolbar";
 import { connect } from "react-redux";
+import { auth } from "../../../../globals/firebase";
+import ons from "onsenui";
 
 function StoreLayout(props: any) {
 
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     let navigate = useNavigate();
     let location = useLocation();
     let store: any;
@@ -60,6 +63,20 @@ function StoreLayout(props: any) {
     const goToStores = () => {
         navigate(routes.storesPageUrl);
     };
+    const handleLog = () => {
+        if (auth.currentUser) {
+            try {
+                auth.signOut();
+                ons.notification.toast('You Signed out.', { timeout: 1000, animation: 'fall', animationOptions: { duration: 0.2, delay: 0.4, timing: 'ease-in' } });
+            } catch (error) {
+                ons.notification.toast('Signout failed. Please, try again.', { timeout: 1000, animation: 'fall', animationOptions: { duration: 0.2, delay: 0.4, timing: 'ease-in' } });
+            }
+        } else {
+            navigate(routes.loginPageUrl, { state: routes.storesPageUrl });
+        }
+        let r = !refresh;
+        setRefresh(r);
+    };
     return (
 
         <Splitter>
@@ -75,22 +92,37 @@ function StoreLayout(props: any) {
                     <List
                         dataSource={['Stores', 'Login']}
                         renderHeader={renderHeader}
-                        renderRow={(row, idx) => (
-                            <ListItem onClick={goToStores} key={idx} tappable={true} modifier='material'>
-                                <div className="left">
+                        renderRow={(row, idx) => {
+                            let label = '';
+                            let logIcon;
+                            if (idx == 0) {
+                                label = row;
+                            } else {
+                                if (auth.currentUser) {
+                                    label = 'Logout';
+                                    logIcon = <Logout fontSize="inherit" />;
+                                } else {
+                                    label = row;
+                                    logIcon = <Login fontSize="inherit" />;
+                                }
+                            }
+                            return (
+                                <ListItem onClick={(idx == 0) ? goToStores : handleLog} key={idx} tappable={true} modifier='material'>
+                                    <div className="left">
 
-                                </div>
-                                <div className="center">
-                                    {(idx == 0) ? <IconButton className="side_button" aria-label="delete" size="small">
-                                        <Store fontSize="inherit" />
-                                    </IconButton> :
-                                        <IconButton className="side_button" aria-label="delete" size="small">
-                                            <Login fontSize="inherit" />
-                                        </IconButton>}
-                                    {row}
-                                </div>
-                            </ListItem>
-                        )}
+                                    </div>
+                                    <div className="center">
+                                        {(idx == 0) ? <IconButton className="side_button" aria-label="delete" size="small">
+                                            <Store fontSize="inherit" />
+                                        </IconButton> :
+                                            <IconButton className="side_button" aria-label="delete" size="small">
+                                                {logIcon}
+                                            </IconButton>}
+                                        {label}
+                                    </div>
+                                </ListItem>
+                            )
+                        }}
                     //renderFooter={renderFooter}
                     />
                 </Page>

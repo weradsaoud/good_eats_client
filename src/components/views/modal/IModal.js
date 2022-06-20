@@ -16,9 +16,9 @@ function IModal(props) {
                             <Button className="first_btn" onClick={props.firstBtnOnClick}>{props.firstBtnContent}</Button>
                         </div>
 
-                        <div className="second_btn_div">
+                        {props.secondBtn ? <div className="second_btn_div">
                             <Button className="second_btn" onClick={props.secondBtnOnClick}>{props.secondBtnContent}</Button>
-                        </div>
+                        </div> : null}
                     </div>
                 </div>
             </div>

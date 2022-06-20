@@ -33,3 +33,18 @@
 .verify_btns_div {
     margin-top: 10px;
 }
+.sending_order_text{
+    color: #292933;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+.log_verify_div{
+    height: fit-content;
+    align-self: center;
+}
+.sending_order{
+    height: fit-content;
+    align-self: center;
+
+}
