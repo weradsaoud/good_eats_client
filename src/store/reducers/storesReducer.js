@@ -316,6 +316,13 @@ const storesReducer = (state = initialState, action) => {
                 orderSuccess: false,
                 orderFailure: false,
             }
+        case actionsTypes.RESETORDERLOGIC:
+            return {
+                ...state,
+                sendingOrder: false,
+                orderSuccess: false,
+                orderFailure: false,
+            }
     }
     return state;
 };

@@ -15,7 +15,7 @@ function Basket(props) {
 
     useEffect(() => {
         return () => props.basketWillUnmount();
-    });
+    }, []);
 
     let navigate = useNavigate();
 
@@ -87,8 +87,8 @@ function Basket(props) {
     };
 
     const checkout = () => {
-        if (auth.currentUser) {
-            let order = prepareOrder(auth.currentUser.phoneNumber);
+        if (true) { //auth.currentUser
+            let order = prepareOrder('phone-number'); //auth.currentUser.phoneNumber
             props.sendOrder(order);
         } else {
             navigate(routes.loginPageUrl, { state: routes.basketPage });
@@ -100,6 +100,7 @@ function Basket(props) {
     }
 
     const modalFirstBtnOnClick_fialure = () => {
+        props.resetOrderLogic();
         navigate(routes.basketPage);
     }
 
@@ -269,7 +270,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteBasketItem: (basketItem) => dispatch({ type: actionsTypes.REMOVEFROMTOBASKET, basketItem: basketItem }),
         incrementCount: (basketItem) => dispatch({ type: actionsTypes.INCREMENTCOUNT, basketItem: basketItem }),
         sendOrder: (order) => dispatch({ type: actionsTypes.SENDORDER, order: order }),
-        basketWillUnmount: () => dispatch({type: actionsTypes.BASKETWILLUNMOUNT})
+        basketWillUnmount: () => dispatch({type: actionsTypes.BASKETWILLUNMOUNT}),
+        resetOrderLogic: () => dispatch({type:actionsTypes.RESETORDERLOGIC})
     }
 };
 

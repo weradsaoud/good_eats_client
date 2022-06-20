@@ -22,6 +22,10 @@ const Login = (props) => {
 	const [verifying, setVerifying] = useState(false);
 	const [sendingOrder, setSendingOrder] = useState(false);
 
+	useEffect(() => {
+		return () => props.loginWillUnmount();
+	}, []);
+
 	let location = useLocation();
 	let from = location.state;
 	let navigate = useNavigate();
@@ -167,7 +171,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		emptybasket: () => dispatch({ type: actionsTypes.EMPTYBASKET }),
-		sendOrder: (order) => dispatch({ type: actionsTypes.SENDORDER, order: order })
+		sendOrder: (order) => dispatch({ type: actionsTypes.SENDORDER, order: order }),
+		loginWillUnmount: () => dispatch({ type: actionsTypes.LOGINWILLUNMOUNT })
 	}
 };
 
