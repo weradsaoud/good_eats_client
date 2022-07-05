@@ -62,6 +62,7 @@ const Login = (props) => {
 		}).catch((err) => {
 			setSignningin(false);
 			console.log('err in signin: ', err);
+			alert(err);
 			ons.notification.toast('Signin failed. Please, try again later.', { timeout: 2000, animation: 'fall', animationOptions: { duration: 0.2, delay: 0.4, timing: 'ease-in' } });
 		});
 	}

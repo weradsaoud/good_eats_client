@@ -87,8 +87,8 @@ function Basket(props) {
     };
 
     const checkout = () => {
-        if (true) { //auth.currentUser
-            let order = prepareOrder('phone-number'); //auth.currentUser.phoneNumber
+        if (auth.currentUser) { //auth.currentUser
+            let order = prepareOrder(auth.currentUser.phoneNumber); //auth.currentUser.phoneNumber
             props.sendOrder(order);
         } else {
             navigate(routes.loginPageUrl, { state: routes.basketPage });
