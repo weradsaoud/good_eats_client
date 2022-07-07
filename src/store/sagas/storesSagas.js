@@ -76,13 +76,14 @@ function* onGetItemExtras(action) {
 
 function* onSendOrder(action) {
     try {
-        yield put({type: actionsTypes.SENDINGORDER})
+        yield put({ type: actionsTypes.SENDINGORDER })
         const response = yield sendOrder(action.order);
-        if(response.status == 200){
-            yield put({type: actionsTypes.ORDERSUCCESS});
+        console.log('send order response: ', response);
+        if (response.status == 200) {
+            yield put({ type: actionsTypes.ORDERSUCCESS });
         }
     } catch (error) {
-        yield put({type: actionsTypes.ORDERFAILED})
+        yield put({ type: actionsTypes.ORDERFAILED })
     }
 }
 
